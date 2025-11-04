@@ -24,7 +24,7 @@ export default function App() {
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const ATTEMPTS_MARGIN = 3
+  const ATTEMPTS_MARGIN = 2
 
   const THEMES: Record<string, Challenge[]> = {
     Verbs: WORDS_VERBS,
