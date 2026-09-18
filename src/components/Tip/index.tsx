@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import styles from "./styles.module.css"
 import tipIcon from "../../assets/tip.svg"
+import { DICAS_INICIAIS } from "../../utils/auth"
 
 type Props = {
   tip: string
@@ -49,10 +50,17 @@ export function Tip({ tip, themeName, exampleHint, dicasRestantes, onUsarDica }:
             disabled={dicasRestantes <= 0}
             title={dicasRestantes <= 0 ? "Você usou todas as suas dicas" : "Ver uma frase em inglês com a palavra escondida"}
           >
-            💡{" "}
-            {dicasRestantes > 0
-              ? `Ver frase em inglês (${dicasRestantes} dica${dicasRestantes === 1 ? "" : "s"} restante${dicasRestantes === 1 ? "" : "s"})`
-              : "Sem dicas restantes"}
+            <span className={styles.lampadas}>
+              {Array.from({ length: DICAS_INICIAIS }).map((_, i) => (
+                <span
+                  key={i}
+                  className={`${styles.lampada} ${i < dicasRestantes ? styles.lampadaAcesa : styles.lampadaApagada}`}
+                >
+                  💡
+                </span>
+              ))}
+            </span>
+            {dicasRestantes > 0 ? "Ver frase em inglês" : "Sem dicas restantes"}
           </button>
         )}
       </div>
