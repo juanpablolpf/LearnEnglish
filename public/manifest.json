@@ -2,14 +2,14 @@
   "name": "Learn English Pro",
   "short_name": "LearnEnglish",
   "description": "Memorize vocabulário em inglês, pratique pronúncia com IA e evolua seu nível.",
-  "start_url": "/",
+  "start_url": "/LearnEnglish/",
   "display": "standalone",
   "background_color": "#0b0f19",
   "theme_color": "#4f46e5",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icon.svg",
+      "src": "/LearnEnglish/icon.svg",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
