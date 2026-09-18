@@ -20,6 +20,7 @@ export interface UserProfile {
   soundEnabled: boolean
   darkMode: boolean
   isGuest: boolean
+  dicasRestantes: number // quantas vezes ainda pode revelar a frase de exemplo em inglês
 }
 
 export interface Achievement {

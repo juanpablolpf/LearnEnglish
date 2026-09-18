@@ -3,6 +3,7 @@ import { checkAndUnlockAchievements } from "./achievements"
 
 const CURRENT_USER_KEY = "learn_english_current_user_v2"
 const USERS_LIST_KEY = "learn_english_users_list_v2"
+export const DICAS_INICIAIS = 3
 
 export const AVAILABLE_AVATARS: { id: AvatarId; name: string }[] = [
   { id: "🦁", name: "Leão" },
@@ -58,6 +59,7 @@ export function createDefaultUser(name: string, avatar: AvatarId = "🦁", isGue
     soundEnabled: true,
     darkMode: false,
     isGuest,
+    dicasRestantes: DICAS_INICIAIS,
   }
 }
 
@@ -66,6 +68,10 @@ export function getCurrentUser(): UserProfile {
     const raw = localStorage.getItem(CURRENT_USER_KEY)
     if (raw) {
       const user: UserProfile = JSON.parse(raw)
+      // Compatibilidade com perfis salvos antes da dica de frase em inglês existir
+      if (typeof user.dicasRestantes !== "number") {
+        user.dicasRestantes = DICAS_INICIAIS
+      }
       const today = getTodayString()
       // Resetar contador diário se for um novo dia
       if (user.lastActiveDate !== today) {
@@ -156,6 +162,16 @@ export function recordFailedWord(challenge: Challenge): UserProfile {
   }
   user.streak = 0
   saveCurrentUser(user)
+  return user
+}
+
+// Consome uma dica de frase em inglês, se ainda houver alguma disponível
+export function usarDica(): UserProfile {
+  const user = getCurrentUser()
+  if (user.dicasRestantes > 0) {
+    user.dicasRestantes -= 1
+    saveCurrentUser(user)
+  }
   return user
 }
 

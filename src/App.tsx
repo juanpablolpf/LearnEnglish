@@ -35,6 +35,7 @@ import {
   saveCurrentUser,
   recordLearnedWord,
   recordFailedWord,
+  usarDica,
 } from "./utils/auth"
 import logo from "./assets/logo.png"
 
@@ -108,6 +109,11 @@ export default function App() {
       saveCurrentUser(updated)
       return updated
     })
+  }
+
+  function handleUsarDica() {
+    const updated = usarDica()
+    setUser(updated)
   }
 
   // Todas as palavras reunidas para o modo misto e geração do quiz
@@ -417,6 +423,8 @@ export default function App() {
                 tip={challenge.tip}
                 themeName={themeDisplayName}
                 exampleHint={ofuscarExemplo(challenge.example, challenge.word)}
+                dicasRestantes={user.dicasRestantes}
+                onUsarDica={handleUsarDica}
               />
 
               {/* Exibição da Palavra */}
