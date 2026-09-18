@@ -1,0 +1,280 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal {
+  background: var(--modal-bg);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 1.25rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 2px solid transparent;
+  color: var(--text-main);
+  transition: background 0.3s ease;
+}
+
+.modalWon {
+  border-color: #10b981;
+}
+
+.modalLost {
+  border-color: #f59e0b;
+}
+
+.headerIcon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  animation: bounce 0.6s ease;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-title);
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.wordCard {
+  background: var(--box-bg);
+  border: 1px solid var(--box-border);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.wordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.englishWord {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+}
+
+.phonetic {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 0.15rem;
+  background: var(--primary-light);
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.35rem;
+}
+
+.audioButton {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: 0.65rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.audioButton:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.audioPlaying {
+  background: #10b981 !important;
+  animation: pulse 1s infinite;
+}
+
+.translation {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--divider);
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.translationLabel {
+  color: var(--text-muted);
+  margin-right: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.exampleSection {
+  background: var(--card-bg);
+  border: 1px dashed var(--box-border);
+  border-radius: 0.65rem;
+  padding: 0.75rem 0.9rem;
+}
+
+.exampleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.exampleTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.listenSentenceBtn {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.3rem;
+  transition: background 0.15s;
+}
+
+.listenSentenceBtn:hover {
+  background: var(--box-bg);
+}
+
+.exampleEn {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  font-style: italic;
+  margin-bottom: 0.2rem;
+}
+
+.examplePt {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.streakBadge {
+  display: inline-block;
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  color: #c2410c;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+:global([data-theme="dark"]) .streakBadge {
+  background: #431407;
+  border-color: #7c2d12;
+  color: #fdba74;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+}
+
+.retryButton {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.retryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.secondaryButton {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--box-border);
+  padding: 0.65rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondaryButton:hover {
+  background: var(--box-bg);
+  color: var(--text-main);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}

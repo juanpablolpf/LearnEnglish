@@ -1,0 +1,248 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(0.75rem, 2vw, 2rem) clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.card {
+  width: 100%;
+  max-width: 860px;
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border-radius: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  animation: cardFadeIn 0.35s ease-out;
+  box-sizing: border-box;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- TELA DE TEMAS --- */
+.themeHeader {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.themeHeroLogo {
+  height: clamp(2.8rem, 7vw, 3.8rem);
+  margin-bottom: 0.35rem;
+}
+
+.themeTitle {
+  font-size: clamp(1.5rem, 4.5vw, 2rem);
+  font-weight: 900;
+  color: var(--text-title);
+  margin-bottom: 0.25rem;
+}
+
+.themeSubtitle {
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: var(--text-muted);
+}
+
+/* Barra de Pesquisa de Temas */
+.searchFilterBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--box-bg);
+  border: 1.5px solid var(--box-border);
+  padding: 10px 16px;
+  border-radius: 16px;
+  margin-bottom: 1.25rem;
+  transition: border-color 0.2s ease;
+}
+
+.searchFilterBar:focus-within {
+  border-color: var(--primary);
+}
+
+.searchIcon {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.searchInput {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  outline: none;
+}
+
+.clearSearchBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px 6px;
+}
+
+/* Barra de Estatísticas do Usuário */
+.statsSummary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.5rem, 2vw, 0.85rem);
+  margin-bottom: 1.25rem;
+}
+
+.statBox {
+  background: var(--stat-box-bg);
+  border: 1px solid var(--box-border);
+  border-radius: 1rem;
+  padding: clamp(0.75rem, 2vw, 1rem);
+  text-align: center;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.statValue {
+  display: block;
+  font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.statLabel {
+  font-size: clamp(0.68rem, 2vw, 0.75rem);
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.themesList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(0.75rem, 2vw, 1rem);
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--divider);
+}
+
+/* --- TELA DE JOGO DA FORCA --- */
+.gameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.backBtn {
+  background: var(--box-bg);
+  border: 1px solid var(--box-border);
+  color: var(--text-main);
+  padding: 0.45rem 0.85rem;
+  border-radius: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s;
+}
+
+.backBtn:hover {
+  background: var(--box-border);
+  transform: translateX(-2px);
+}
+
+.themeBadge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px solid var(--primary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+}
+
+/* Exibição da Palavra */
+.wordArea {
+  width: 100%;
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.wordRow {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 0.75rem;
+  column-gap: 1.25rem;
+}
+
+.wordGroup {
+  display: flex;
+  gap: clamp(0.25rem, 0.8vw, 0.5rem);
+  flex-wrap: nowrap;
+}
+
+/* Campo de Palpite */
+.guessSection {
+  margin-top: 1.25rem;
+}
+
+.guessLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.keyboardHint {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: none;
+}
+
+.guessControls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 680px) {
+  .themesList {
+    grid-template-columns: 1fr;
+  }
+  .statsSummary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .keyboardHint {
+    display: none;
+  }
+}

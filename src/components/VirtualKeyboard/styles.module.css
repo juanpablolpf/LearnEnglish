@@ -1,0 +1,66 @@
+.keyboard {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.25rem, 1vw, 0.45rem);
+  margin-top: 1.25rem;
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: clamp(0.15rem, 0.9vw, 0.35rem);
+}
+
+.key {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 2.35rem;
+  height: clamp(2.3rem, 6.8vw, 2.75rem);
+  border-radius: clamp(0.35rem, 1vw, 0.45rem);
+  background-color: var(--key-bg);
+  border: 1px solid var(--key-border);
+  color: var(--key-color);
+  font-size: clamp(0.75rem, 2.8vw, 0.95rem);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 0 var(--key-shadow);
+}
+
+.key:hover:not(:disabled) {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.key:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.keyCorrect {
+  background-color: #10b981 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 0 #047857 !important;
+  cursor: default;
+  opacity: 0.95;
+}
+
+.keyWrong {
+  background-color: var(--box-border) !important;
+  border-color: var(--card-border) !important;
+  color: var(--text-muted) !important;
+  box-shadow: none !important;
+  cursor: default;
+  opacity: 0.4;
+  text-decoration: line-through;
+}

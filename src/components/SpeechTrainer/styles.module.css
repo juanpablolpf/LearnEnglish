@@ -1,0 +1,356 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.backBtn {
+  background: transparent;
+  border: 1px solid var(--box-border);
+  color: var(--text-muted);
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background: var(--box-bg);
+  color: var(--text-title);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.themeName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--box-bg);
+  border: 1px solid var(--box-border);
+  padding: 6px 12px;
+  border-radius: 9999px;
+}
+
+.counter {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  text-align: center;
+}
+
+.prompt {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wordBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 32px;
+  background: var(--box-bg);
+  border: 1px solid var(--box-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.targetWord {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--text-title);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.phonetic {
+  font-size: 1.1rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.tip {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.listenBtn {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--box-border);
+  background: var(--card-bg);
+  color: var(--text-title);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.listenBtn:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.micSection {
+  width: 100%;
+  max-width: 480px;
+}
+
+.unsupportedAlert {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.micControls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.micButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 24px;
+  border-radius: 20px;
+  border: 2px solid var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+  transition: all 0.2s ease;
+}
+
+.micButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.micButton.listening {
+  background: #ef4444;
+  border-color: #ef4444;
+  animation: pulse 1.2s infinite ease-in-out;
+}
+
+.micButton.processing {
+  background: #f59e0b;
+  border-color: #f59e0b;
+}
+
+.micIcon {
+  font-size: 1.4rem;
+}
+
+.errorMsg {
+  color: var(--danger);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.resultBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 480px;
+  background: var(--box-bg);
+  border: 1.5px solid var(--box-border);
+  border-radius: 20px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.scoreRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.scoreTitle {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-title);
+}
+
+.scoreTag {
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+
+.scoreGood {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.scoreNeedsWork {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.transcriptBox {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  background: var(--card-bg);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--box-border);
+}
+
+.transcriptLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.transcriptText {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.actionButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.retryBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--box-border);
+  background: var(--card-bg);
+  color: var(--text-title);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryBtn:hover {
+  background: var(--box-bg);
+}
+
+.nextBtn {
+  flex: 1.2;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nextBtn:hover {
+  background: var(--primary-hover);
+}
+
+/* End screen */
+.endContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  gap: 16px;
+}
+
+.endIcon {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.endTitle {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text-title);
+  margin: 0;
+}
+
+.endText {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 440px;
+  margin: 0;
+}
+
+.backBtnLarge {
+  margin-top: 12px;
+  padding: 14px 28px;
+  border-radius: 16px;
+  border: none;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.backBtnLarge:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { transform: scale(1.02); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

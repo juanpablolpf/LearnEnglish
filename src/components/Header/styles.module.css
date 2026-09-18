@@ -1,0 +1,136 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topRow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.logo {
+  height: 3.25rem;
+  object-fit: contain;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.iconBtn {
+  background: var(--box-bg);
+  border: 1px solid var(--box-border);
+  border-radius: 0.6rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.iconBtn:hover {
+  background: var(--box-border);
+  transform: scale(1.08);
+}
+
+.iconBtn img {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+:global([data-theme="dark"]) .iconBtn img {
+  filter: invert(1) brightness(2);
+}
+
+.statsBar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--box-bg);
+  border: 1px solid var(--box-border);
+  border-radius: 0.85rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.livesWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.livesLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hearts {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.heart {
+  font-size: 1.15rem;
+  transition: all 0.3s ease;
+}
+
+.heartActive {
+  filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.3));
+  transform: scale(1);
+}
+
+.heartLost {
+  filter: grayscale(100%) opacity(30%);
+  transform: scale(0.85);
+}
+
+.streakTag {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #c2410c;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+}
+
+:global([data-theme="dark"]) .streakTag {
+  background: #431407;
+  border-color: #7c2d12;
+  color: #fdba74;
+}
+
+@media (max-width: 480px) {
+  .topRow {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .logo {
+    height: 2.5rem;
+  }
+
+  .iconBtn {
+    width: 2.1rem;
+    height: 2.1rem;
+    font-size: 1rem;
+  }
+
+  .statsBar {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+}

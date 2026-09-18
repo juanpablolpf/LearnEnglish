@@ -1,0 +1,178 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.headerBadge {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--primary);
+  letter-spacing: 0.05em;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-title);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.modesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.modeCard {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.modeCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 18px 35px -8px rgba(79, 70, 229, 0.18);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modeIcon {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.modeTag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: var(--box-bg);
+  color: var(--primary);
+  border: 1px solid var(--box-border);
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.modeTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-title);
+  margin: 0;
+}
+
+.modeDesc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+  flex: 1;
+}
+
+.startBtn {
+  margin-top: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.modeCard:hover .startBtn {
+  filter: brightness(1.1);
+  transform: translateX(4px);
+}
+
+.reviewBanner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.08) 100%);
+  border: 1.5px solid rgba(239, 68, 68, 0.3);
+  border-radius: 18px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reviewBanner:hover {
+  transform: translateY(-2px);
+  border-color: var(--danger);
+}
+
+.reviewIcon {
+  font-size: 2rem;
+}
+
+.reviewInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reviewInfo strong {
+  font-size: 1rem;
+  color: var(--danger);
+}
+
+.reviewInfo p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.reviewBtn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: var(--danger);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  .modesGrid {
+    grid-template-columns: 1fr;
+  }
+  .reviewBanner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .reviewBtn {
+    width: 100%;
+  }
+}
