@@ -2,6 +2,7 @@ import styles from "./app.module.css"
 import { useEffect, useState, useRef, useCallback } from "react"
 
 import { THEME_DATA } from "./data/themeData"
+import { ofuscarExemplo } from "./utils/exampleHint"
 
 import type { Challenge, GameStatus, LettersUsedProps, UserProfile, MainTab, StudyMode } from "./types"
 
@@ -412,7 +413,11 @@ export default function App() {
                 onRestart={handleRestartGame}
               />
 
-              <Tip tip={challenge.tip} themeName={themeDisplayName} />
+              <Tip
+                tip={challenge.tip}
+                themeName={themeDisplayName}
+                exampleHint={ofuscarExemplo(challenge.example, challenge.word)}
+              />
 
               {/* Exibição da Palavra */}
               <div className={styles.wordArea}>
