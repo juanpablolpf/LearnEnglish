@@ -18,7 +18,12 @@ export function speakWord(text: string, rate = 0.85): Promise<void> {
       return
     }
 
-    const utterance = new SpeechSynthesisUtterance(cleanText)
+    // Palavras curtas e em maiúsculas (ex: "CAR", "BUS") são interpretadas por
+    // várias vozes como siglas, e soletradas letra a letra em vez de faladas
+    // como palavra. Falar em minúsculas evita esse comportamento.
+    const spokenText = cleanText.toLowerCase()
+
+    const utterance = new SpeechSynthesisUtterance(spokenText)
     utterance.lang = "en-US"
     utterance.rate = rate
     utterance.pitch = 1.0
