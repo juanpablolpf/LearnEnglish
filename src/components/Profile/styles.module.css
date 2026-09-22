@@ -353,6 +353,79 @@
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
 }
 
+/* Versão Completa (Pro) */
+.proBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid var(--success);
+  border-radius: 18px;
+  padding: 18px 22px;
+}
+
+.proIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.proBox strong {
+  color: var(--success);
+  font-size: 1rem;
+}
+
+.proBox p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+.unlockRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.unlockInput {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--box-border);
+  background: var(--box-bg);
+  color: var(--text-title);
+  font-size: 0.95rem;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.unlockInput:focus {
+  border-color: var(--primary);
+}
+
+.unlockBtn {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.unlockBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.unlockError {
+  font-size: 0.85rem;
+  color: var(--danger);
+  margin: 0;
+}
+
 /* Danger Zone */
 .dangerZone {
   display: flex;

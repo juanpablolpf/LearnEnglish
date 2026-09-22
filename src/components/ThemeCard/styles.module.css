@@ -34,6 +34,31 @@
   box-shadow: 0 12px 20px -5px rgba(245, 158, 11, 0.3);
 }
 
+.cardLocked {
+  opacity: 0.72;
+}
+
+.cardLocked:hover {
+  border-color: var(--box-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.cardLocked .iconWrapper {
+  background: var(--icon-bg);
+  filter: grayscale(1);
+}
+
+.lockedBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--icon-bg);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--box-border);
+  white-space: nowrap;
+}
+
 .iconWrapper {
   font-size: 2.2rem;
   display: flex;

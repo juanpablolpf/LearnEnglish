@@ -14,13 +14,16 @@ type Props = {
   user: UserProfile
   onUserUpdated: (user: UserProfile) => void
   onOpenLogin: () => void
+  onUnlockPro: (code: string) => Promise<boolean>
 }
 
-export function Profile({ user, onUserUpdated, onOpenLogin }: Props) {
+export function Profile({ user, onUserUpdated, onOpenLogin, onUnlockPro }: Props) {
   const [name, setName] = useState(user.name)
   const [dailyGoal, setDailyGoal] = useState(user.dailyGoal)
   const [isEditingName, setIsEditingName] = useState(false)
   const [saveMessage, setSaveMessage] = useState("")
+  const [proCode, setProCode] = useState("")
+  const [proStatus, setProStatus] = useState<"idle" | "checking" | "invalid">("idle")
 
   const levelInfo = calculateLevel(user.xp)
   const totalLearnedWords = Object.values(user.completedWordIds).reduce(
@@ -64,6 +67,18 @@ export function Profile({ user, onUserUpdated, onOpenLogin }: Props) {
   function showSavedToast(msg: string) {
     setSaveMessage(msg)
     setTimeout(() => setSaveMessage(""), 3000)
+  }
+
+  async function handleUnlockPro() {
+    if (!proCode.trim()) return
+    setProStatus("checking")
+    const valid = await onUnlockPro(proCode)
+    if (valid) {
+      setProCode("")
+      setProStatus("idle")
+    } else {
+      setProStatus("invalid")
+    }
   }
 
   return (
@@ -149,6 +164,48 @@ export function Profile({ user, onUserUpdated, onOpenLogin }: Props) {
       </div>
 
       {saveMessage && <div className={styles.saveToast}>✓ {saveMessage}</div>}
+
+      {/* Seção 0: Versão Completa (Pro) */}
+      {user.isPro ? (
+        <div className={styles.proBox}>
+          <span className={styles.proIcon}>🔓</span>
+          <div>
+            <strong>Versão completa desbloqueada</strong>
+            <p>Todos os temas e dicas ilimitadas estão liberados neste perfil.</p>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.sectionBox}>
+          <h3 className={styles.sectionTitle}>🔓 Desbloquear Versão Completa</h3>
+          <p className={styles.sectionDesc}>
+            Libere todos os 16 temas e dicas ilimitadas com o código de acesso que você recebe na compra.
+          </p>
+          <div className={styles.unlockRow}>
+            <input
+              type="text"
+              value={proCode}
+              onChange={(e) => {
+                setProCode(e.target.value)
+                if (proStatus === "invalid") setProStatus("idle")
+              }}
+              placeholder="Ex: LEP-XXXX-XXXX-XXXX"
+              className={styles.unlockInput}
+              maxLength={40}
+            />
+            <button
+              type="button"
+              className={styles.unlockBtn}
+              onClick={handleUnlockPro}
+              disabled={!proCode.trim() || proStatus === "checking"}
+            >
+              {proStatus === "checking" ? "Verificando..." : "Desbloquear"}
+            </button>
+          </div>
+          {proStatus === "invalid" && (
+            <p className={styles.unlockError}>Código inválido. Confira se digitou certinho.</p>
+          )}
+        </div>
+      )}
 
       {/* Grid de Estatísticas Detalhadas */}
       <div className={styles.statsGrid}>

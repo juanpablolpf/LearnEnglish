@@ -1,5 +1,6 @@
 import type { UserProfile, AvatarId, Challenge } from "../types"
 import { checkAndUnlockAchievements } from "./achievements"
+import { isValidProCode } from "./license"
 
 const CURRENT_USER_KEY = "learn_english_current_user_v2"
 const USERS_LIST_KEY = "learn_english_users_list_v2"
@@ -60,6 +61,7 @@ export function createDefaultUser(name: string, avatar: AvatarId = "🦁", isGue
     darkMode: false,
     isGuest,
     dicasRestantes: DICAS_INICIAIS,
+    isPro: false,
   }
 }
 
@@ -71,6 +73,10 @@ export function getCurrentUser(): UserProfile {
       // Compatibilidade com perfis salvos antes da dica de frase em inglês existir
       if (typeof user.dicasRestantes !== "number") {
         user.dicasRestantes = DICAS_INICIAIS
+      }
+      // Compatibilidade com perfis salvos antes da versão Pro existir
+      if (typeof user.isPro !== "boolean") {
+        user.isPro = false
       }
       const today = getTodayString()
       // Resetar contador diário se for um novo dia
@@ -173,6 +179,22 @@ export function usarDica(): UserProfile {
     saveCurrentUser(user)
   }
   return user
+}
+
+// Tenta desbloquear a versão completa (Pro) com um código de acesso.
+// Retorna se o código era válido; o perfil só é alterado quando é.
+export async function unlockPro(code: string): Promise<{ valid: boolean; user: UserProfile }> {
+  const user = getCurrentUser()
+  if (user.isPro) {
+    return { valid: true, user }
+  }
+
+  const valid = await isValidProCode(code)
+  if (valid) {
+    user.isPro = true
+    saveCurrentUser(user)
+  }
+  return { valid, user }
 }
 
 export function getAllUsers(): UserProfile[] {

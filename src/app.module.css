@@ -44,6 +44,13 @@
   color: var(--text-muted);
 }
 
+.themeSubtitlePro {
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
 /* Barra de Pesquisa de Temas */
 .searchFilterBar {
   display: flex;

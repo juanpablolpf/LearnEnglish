@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Códigos de acesso Pro em texto puro (gerados por scripts/gerar-codigos-pro.mjs).
+# Nunca devem ir para o repositório público - só os hashes em src/utils/license.ts.
+codigos-pro*.csv
+codigos-pro*.txt

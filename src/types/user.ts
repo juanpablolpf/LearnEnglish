@@ -21,6 +21,7 @@ export interface UserProfile {
   darkMode: boolean
   isGuest: boolean
   dicasRestantes: number // quantas vezes ainda pode revelar a frase de exemplo em inglês
+  isPro: boolean // desbloqueou a versão completa (todos os temas + dicas ilimitadas) com um código de acesso
 }
 
 export interface Achievement {

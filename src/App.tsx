@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from "react"
 
 import { THEME_DATA } from "./data/themeData"
 import { ofuscarExemplo } from "./utils/exampleHint"
+import { FREE_THEME_KEYS } from "./utils/license"
 
 import type { Challenge, GameStatus, LettersUsedProps, UserProfile, MainTab, StudyMode } from "./types"
 
@@ -36,6 +37,7 @@ import {
   recordLearnedWord,
   recordFailedWord,
   usarDica,
+  unlockPro,
 } from "./utils/auth"
 import logo from "./assets/logo.png"
 
@@ -116,13 +118,49 @@ export default function App() {
     setUser(updated)
   }
 
+  async function handleUnlockPro(code: string): Promise<boolean> {
+    const { valid, user: updated } = await unlockPro(code)
+    setUser(updated)
+    if (valid) {
+      triggerToast({
+        type: "levelup",
+        title: "Versão completa desbloqueada!",
+        subtitle: "Todos os temas e dicas ilimitadas já estão liberados.",
+        icon: "🔓",
+      })
+    }
+    return valid
+  }
+
   // Todas as palavras reunidas para o modo misto e geração do quiz
   const allAvailableWords = Object.values(THEME_DATA).flatMap((t) => t.words)
+
+  // Quem não comprou a versão completa só mistura os temas gratuitos
+  const unlockedWordsPool = user.isPro
+    ? allAvailableWords
+    : Object.entries(THEME_DATA)
+        .filter(([key]) => FREE_THEME_KEYS.includes(key))
+        .flatMap(([, data]) => data.words)
+
+  function isThemeLocked(themeKey: string): boolean {
+    return !user.isPro && !FREE_THEME_KEYS.includes(themeKey)
+  }
 
   // Iniciar tema comum com um modo específico
   function handleStartTheme(themeKey: string, mode: StudyMode = "hangman") {
     const theme = THEME_DATA[themeKey]
     if (!theme) return
+
+    if (isThemeLocked(themeKey)) {
+      triggerToast({
+        type: "locked",
+        title: theme.title,
+        subtitle: "Esse tema faz parte da versão completa. Desbloqueie em Meu Perfil.",
+        icon: "🔒",
+      })
+      setMainTab("profile")
+      return
+    }
 
     setSelectedTheme(themeKey)
     setThemeDisplayName(theme.title)
@@ -131,12 +169,12 @@ export default function App() {
     startNewThemeSession(shuffled)
   }
 
-  // Iniciar modo misto (todas as 800+ palavras)
+  // Iniciar modo misto (todas as palavras já desbloqueadas)
   function handleSelectMixMode(mode: StudyMode = "hangman") {
     setSelectedTheme("MIX")
-    setThemeDisplayName("Todas as Palavras 🎲")
+    setThemeDisplayName(user.isPro ? "Todas as Palavras 🎲" : "Palavras Grátis 🎲")
     setActiveStudyMode(mode)
-    const shuffled = shuffleArray(allAvailableWords)
+    const shuffled = shuffleArray(unlockedWordsPool)
     startNewThemeSession(shuffled)
   }
 
@@ -423,7 +461,7 @@ export default function App() {
                 tip={challenge.tip}
                 themeName={themeDisplayName}
                 exampleHint={ofuscarExemplo(challenge.example, challenge.word)}
-                dicasRestantes={user.dicasRestantes}
+                dicasRestantes={user.isPro ? Infinity : user.dicasRestantes}
                 onUsarDica={handleUsarDica}
               />
 
@@ -568,6 +606,11 @@ export default function App() {
               <p className={styles.themeSubtitle}>
                 {allAvailableWords.length} palavras em 16 categorias com fonética nativa e frases
               </p>
+              {!user.isPro && (
+                <p className={styles.themeSubtitlePro}>
+                  🔓 {FREE_THEME_KEYS.length} temas grátis para experimentar · o restante faz parte da versão completa
+                </p>
+              )}
             </div>
 
             {/* Estatísticas Rápidas */}
@@ -619,6 +662,7 @@ export default function App() {
                     description={data.desc}
                     totalWords={data.words.length}
                     completedWords={completedCount}
+                    isLocked={isThemeLocked(key)}
                     onClick={() => handleStartTheme(key, "hangman")}
                   />
                 )
@@ -641,7 +685,11 @@ export default function App() {
             {/* Ações Rápidas */}
             <div className={styles.quickActions}>
               <Button
-                title={`🎲 Modo Misto (Misturar Todas as ${allAvailableWords.length} Palavras)`}
+                title={
+                  user.isPro
+                    ? `🎲 Modo Misto (Misturar Todas as ${allAvailableWords.length} Palavras)`
+                    : `🎲 Modo Misto (${unlockedWordsPool.length} Palavras Grátis)`
+                }
                 variant="outline"
                 onClick={() => handleSelectMixMode("hangman")}
               />
@@ -652,7 +700,7 @@ export default function App() {
         {/* ABA 2: PRATICAR (HUB DE MODOS DE ESTUDO) */}
         {mainTab === "practice" && (
           <PracticeHub
-            totalWords={allAvailableWords.length}
+            totalWords={unlockedWordsPool.length}
             difficultWordsCount={user.difficultWords.length}
             onSelectMode={(mode) => {
               handleSelectMixMode(mode)
@@ -686,6 +734,7 @@ export default function App() {
             user={user}
             onUserUpdated={setUser}
             onOpenLogin={() => setIsLoginModalOpen(true)}
+            onUnlockPro={handleUnlockPro}
           />
         )}
       </main>

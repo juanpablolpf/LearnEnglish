@@ -2,7 +2,7 @@ import styles from "./styles.module.css"
 
 export interface ToastMessage {
   id: string
-  type: "achievement" | "levelup" | "xp"
+  type: "achievement" | "levelup" | "xp" | "locked"
   title: string
   subtitle?: string
   icon?: string
@@ -31,6 +31,8 @@ export function AchievementToast({ toasts, onDismiss }: Props) {
                 ? "🚀 NOVO NÍVEL!"
                 : toast.type === "achievement"
                 ? "🏆 CONQUISTA DESBLOQUEADA!"
+                : toast.type === "locked"
+                ? "🔒 CONTEÚDO DA VERSÃO COMPLETA"
                 : "⚡ XP GANHO!"}
             </span>
             <strong className={styles.title}>{toast.title}</strong>

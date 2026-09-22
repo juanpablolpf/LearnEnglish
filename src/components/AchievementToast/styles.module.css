@@ -64,6 +64,10 @@
   color: #6366f1;
 }
 
+.toast.locked .badge {
+  color: #64748b;
+}
+
 .title {
   font-size: 0.95rem;
   color: var(--text-title);
