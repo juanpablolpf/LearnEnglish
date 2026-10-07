@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import type { Challenge, GameStatus } from "../../types"
 import { speakWord } from "../../utils/speech"
+import { Check, Flame, Lightbulb, RotateCcw, Volume2 } from "lucide-react"
 import styles from "./styles.module.css"
 
 interface ResultModalProps {
@@ -51,13 +52,18 @@ export function ResultModal({
 
   return (
     <div className={styles.overlay}>
-      <div className={`${styles.modal} ${isWon ? styles.modalWon : styles.modalLost}`}>
-        <div className={styles.headerIcon}>
-          {isWon ? "🎉" : "💡"}
+      <div
+        className={`${styles.modal} ${isWon ? styles.modalWon : styles.modalLost}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="result-title"
+      >
+        <div className={styles.headerIcon} aria-hidden="true">
+          {isWon ? <Check size={22} strokeWidth={2} /> : <Lightbulb size={22} strokeWidth={1.75} />}
         </div>
 
-        <h2 className={styles.title}>
-          {isWon ? "Excelente! Você acertou!" : "Continue praticando!"}
+        <h2 className={`title-display ${styles.title}`} id="result-title">
+          {isWon ? "Você acertou" : "Quase lá"}
         </h2>
 
         <p className={styles.subtitle}>
@@ -82,15 +88,13 @@ export function ResultModal({
               onClick={handlePlayAudio}
               title="Ouvir pronúncia em inglês"
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-              </svg>
+              <Volume2 size={17} strokeWidth={1.75} aria-hidden="true" />
               <span>Ouvir</span>
             </button>
           </div>
 
           <div className={styles.translation}>
-            <span className={styles.translationLabel}>Tradução:</span>
+            <span className={styles.translationLabel}>Tradução</span>
             <strong>{challenge.tip}</strong>
           </div>
 
@@ -98,14 +102,15 @@ export function ResultModal({
           {challenge.example && (
             <div className={styles.exampleSection}>
               <div className={styles.exampleHeader}>
-                <span className={styles.exampleTitle}>Exemplo em Frase:</span>
+                <span className={styles.exampleTitle}>Exemplo em frase</span>
                 <button
                   type="button"
                   className={styles.listenSentenceBtn}
                   onClick={handlePlaySentence}
                   title="Ouvir a frase inteira"
+                  aria-label="Ouvir a frase inteira"
                 >
-                  🔊
+                  <Volume2 size={15} strokeWidth={1.75} aria-hidden="true" />
                 </button>
               </div>
               <p className={styles.exampleEn}>"{challenge.example}"</p>
@@ -119,7 +124,8 @@ export function ResultModal({
         {/* Streak Counter */}
         {streak > 0 && (
           <div className={styles.streakBadge}>
-            🔥 Sequência atual: <strong>{streak} {streak === 1 ? "palavra" : "palavras"}</strong>
+            <Flame size={15} strokeWidth={1.75} aria-hidden="true" />
+            Sequência atual: <strong>{streak} {streak === 1 ? "palavra" : "palavras"}</strong>
           </div>
         )}
 
@@ -127,16 +133,17 @@ export function ResultModal({
         <div className={styles.actions}>
           {isWon ? (
             <button type="button" className={styles.primaryButton} onClick={onNext}>
-              Próxima Palavra ➔
+              Próxima palavra
             </button>
           ) : (
             <button type="button" className={styles.retryButton} onClick={onRetry}>
-              🔄 Tentar Novamente
+              <RotateCcw size={15} strokeWidth={1.75} aria-hidden="true" />
+              Tentar novamente
             </button>
           )}
 
           <button type="button" className={styles.secondaryButton} onClick={onBackToThemes}>
-            Voltar aos Temas
+            Voltar aos temas
           </button>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { ArrowRight, Check } from "lucide-react"
 import type { UserProfile, Achievement } from "../../types"
 import { ALL_ACHIEVEMENTS } from "../../utils/achievements"
 import styles from "./styles.module.css"
@@ -43,58 +44,44 @@ export function Achievements({ user, onStartStudy }: Props) {
 
   return (
     <div className={styles.container}>
-      {/* Header com Progresso Geral */}
       <div className={styles.header}>
-        <div className={styles.titleGroup}>
-          <span className={styles.headerBadge}>🏆 Mural de Conquistas</span>
-          <h2 className={styles.title}>Suas Conquistas e Troféus</h2>
-          <p className={styles.subtitle}>
-            Desbloqueie troféus e ganhe XP bônus para subir de nível e liderar o ranking!
-          </p>
-        </div>
+        <div className={styles.spotlight} aria-hidden="true" />
+        <h2 className={`title-display ${styles.title}`}>Suas conquistas</h2>
+        <p className={styles.subtitle}>
+          Cada conquista dá XP bônus para subir de nível e no ranking.
+        </p>
 
-        <div className={styles.progressSummaryCard}>
+        <div className={styles.progressSummary}>
           <div className={styles.summaryTop}>
-            <span className={styles.summaryLabel}>Progresso Geral</span>
-            <span className={styles.summaryCount}>
-              {unlockedCount} / {totalCount}
-            </span>
+            <span>{unlockedCount} de {totalCount} desbloqueadas</span>
+            <span>{percentUnlocked}%</span>
           </div>
           <div className={styles.progressBar}>
-            <div
-              className={styles.progressFill}
-              style={{ width: `${percentUnlocked}%` }}
-            />
+            <div className={styles.progressFill} style={{ width: `${percentUnlocked}%` }} />
           </div>
-          <span className={styles.summaryPercent}>{percentUnlocked}% Concluído</span>
         </div>
       </div>
 
-      {/* Grid de Conquistas */}
       <div className={styles.achievementsGrid}>
         {ALL_ACHIEVEMENTS.map((ach) => {
           const isUnlocked = user.unlockedAchievementIds.includes(ach.id)
           const prog = getAchievementProgress(ach)
+          const Icon = ach.icon
 
           return (
             <div
               key={ach.id}
-              className={`${styles.achievementCard} ${
-                isUnlocked ? styles.unlocked : styles.locked
-              }`}
+              className={`${styles.achievementCard} ${isUnlocked ? styles.unlocked : styles.locked}`}
             >
               <div className={styles.cardHeader}>
-                <div className={styles.iconWrapper}>
-                  <span className={styles.icon}>{ach.icon}</span>
-                  {isUnlocked && <span className={styles.checkmark}>✓</span>}
-                </div>
+                <span className={styles.iconWrapper} aria-hidden="true">
+                  <Icon size={19} strokeWidth={1.6} />
+                </span>
                 <span className={styles.xpReward}>+{ach.xpReward} XP</span>
               </div>
 
-              <div className={styles.cardBody}>
-                <h3 className={styles.achTitle}>{ach.title}</h3>
-                <p className={styles.achDesc}>{ach.description}</p>
-              </div>
+              <h3 className={styles.achTitle}>{ach.title}</h3>
+              <p className={styles.achDesc}>{ach.description}</p>
 
               <div className={styles.cardFooter}>
                 <div className={styles.footerProgressBar}>
@@ -103,30 +90,29 @@ export function Achievements({ user, onStartStudy }: Props) {
                     style={{ width: `${isUnlocked ? 100 : prog.percent}%` }}
                   />
                 </div>
-                <div className={styles.footerLabelRow}>
-                  <span className={styles.footerStatus}>
-                    {isUnlocked
-                      ? "Conquistada 🎉"
-                      : `${prog.current} / ${prog.max}`}
-                  </span>
-                  {!isUnlocked && (
-                    <span className={styles.footerPercent}>{prog.percent}%</span>
+                <span className={styles.footerStatus}>
+                  {isUnlocked ? (
+                    <>
+                      <Check size={13} strokeWidth={2} aria-hidden="true" /> Conquistada
+                    </>
+                  ) : (
+                    `${prog.current} de ${prog.max}`
                   )}
-                </div>
+                </span>
               </div>
             </div>
           )
         })}
       </div>
 
-      {/* Call to Action */}
       <div className={styles.ctaBox}>
         <div className={styles.ctaText}>
-          <strong>Quer desbloquear mais conquistas?</strong>
-          <p>Pratique agora qualquer um dos 16 temas e acumule XP!</p>
+          <strong>Quer desbloquear mais?</strong>
+          <p>Pratique qualquer tema e acumule XP.</p>
         </div>
         <button type="button" className={styles.ctaBtn} onClick={onStartStudy}>
-          Continuar Estudando 🚀
+          Continuar estudando
+          <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
         </button>
       </div>
     </div>

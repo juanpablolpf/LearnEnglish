@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import type { Challenge } from "../../types"
 import { speakWord } from "../../utils/speech"
 import { sounds } from "../../utils/soundEffects"
+import { ArrowLeft, Check, RotateCcw, Volume2 } from "lucide-react"
 import styles from "./styles.module.css"
 
 type Props = {
@@ -41,13 +42,15 @@ export function Flashcards({
   if (!currentWord) {
     return (
       <div className={styles.completedContainer}>
-        <span className={styles.completedIcon}>🎉</span>
-        <h2 className={styles.completedTitle}>Sessão de Flashcards Concluída!</h2>
+        <span className={styles.completedIcon} aria-hidden="true">
+          <Check size={22} strokeWidth={2} />
+        </span>
+        <h2 className={`title-display ${styles.completedTitle}`}>Sessão concluída</h2>
         <p className={styles.completedSubtitle}>
-          Você revisou todas as {words.length} palavras deste tema e dominou {masteredCount} termos!
+          Você revisou as {words.length} palavras deste tema e dominou {masteredCount}.
         </p>
         <button type="button" className={styles.backBtnLarge} onClick={onBack}>
-          Voltar ao Menu
+          Voltar ao menu
         </button>
       </div>
     )
@@ -88,7 +91,8 @@ export function Flashcards({
       {/* Top Header */}
       <div className={styles.topRow}>
         <button type="button" className={styles.backBtn} onClick={onBack}>
-          ← Voltar
+          <ArrowLeft size={15} strokeWidth={1.75} aria-hidden="true" />
+          Voltar
         </button>
         <div className={styles.metaBadge}>
           <span className={styles.themeName}>{themeTitle}</span>
@@ -103,7 +107,7 @@ export function Flashcards({
         <div className={`${styles.card3d} ${isFlipped ? styles.isFlipped : ""}`}>
           {/* Frente do Card (Inglês) */}
           <div className={styles.cardFaceFront}>
-            <span className={styles.flipHint}>💡 Toque para virar o cartão</span>
+            <span className={styles.flipHint}>Toque para virar o cartão</span>
 
             <div className={styles.wordSection}>
               <h2 className={styles.englishWord}>{currentWord.word}</h2>
@@ -118,28 +122,30 @@ export function Flashcards({
               onClick={(e) => handleSpeak(e, currentWord.word)}
               title="Ouvir pronúncia nativa"
             >
-              🔊 Ouvir Pronúncia
+              <Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
+              Ouvir pronúncia
             </button>
           </div>
 
           {/* Verso do Card (Português & Exemplo) */}
           <div className={styles.cardFaceBack}>
-            <span className={styles.flipHint}>💡 Toque para virar</span>
+            <span className={styles.flipHint}>Toque para virar</span>
 
             <div className={styles.backContent}>
-              <span className={styles.translationLabel}>Tradução / Significado:</span>
+              <span className={styles.translationLabel}>Tradução</span>
               <h3 className={styles.portugueseTip}>{currentWord.tip}</h3>
 
               {currentWord.example && (
                 <div className={styles.exampleBox}>
                   <div className={styles.exampleHeader}>
-                    <span>Exemplo em Frase:</span>
+                    <span>Exemplo em frase</span>
                     <button
                       type="button"
                       className={styles.miniAudioBtn}
                       onClick={(e) => handleSpeak(e, currentWord.example!)}
+                      aria-label="Ouvir a frase"
                     >
-                      🔊
+                      <Volume2 size={14} strokeWidth={1.75} aria-hidden="true" />
                     </button>
                   </div>
                   <p className={styles.exampleEn}>"{currentWord.example}"</p>
@@ -160,7 +166,8 @@ export function Flashcards({
           className={styles.reviewActionBtn}
           onClick={handleNeedReview}
         >
-          🔄 Preciso Revisar (+0 XP)
+          <RotateCcw size={15} strokeWidth={1.75} aria-hidden="true" />
+          Preciso revisar
         </button>
 
         <button
@@ -168,7 +175,8 @@ export function Flashcards({
           className={styles.masterActionBtn}
           onClick={handleMastered}
         >
-          ⭐ Já Dominei (+15 XP)
+          <Check size={15} strokeWidth={2} aria-hidden="true" />
+          Já dominei (+15 XP)
         </button>
       </div>
     </div>

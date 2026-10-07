@@ -1,25 +1,22 @@
 .input {
   width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 0.65rem;
+  height: 2.75rem;
+  border-radius: 9999px;
 
   background-color: var(--box-bg);
-  border: 2px solid var(--box-border);
-  color: var(--text-main);
+  border: 1px solid var(--box-border);
+  color: var(--text-title);
 
   text-transform: uppercase;
   text-align: center;
-  font-size: 1.4rem;
-  font-weight: 800;
+  font-size: 1.2rem;
+  font-weight: 600;
 
   outline: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input:focus {
   border-color: var(--primary);
-  background-color: var(--card-bg);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
-  transform: scale(1.04);
+  box-shadow: 0 0 0 4px var(--primary-light);
 }

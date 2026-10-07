@@ -1,178 +1,167 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   width: 100%;
 }
 
 .header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  position: relative;
+  text-align: center;
+  padding-top: clamp(1.5rem, 5vw, 3.5rem);
+  margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 
-.headerBadge {
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: var(--primary);
-  letter-spacing: 0.05em;
+.spotlight {
+  position: absolute;
+  left: 50%;
+  top: -60px;
+  width: min(560px, 120%);
+  height: 260px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: var(--glow-hero);
+  -webkit-mask-image: linear-gradient(#000 30%, transparent 62%);
+  mask-image: linear-gradient(#000 30%, transparent 62%);
 }
 
 .title {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--text-title);
-  margin: 0;
+  position: relative;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  padding-bottom: 0.08em;
 }
 
 .subtitle {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin: 0;
+  position: relative;
+  max-width: 34rem;
+  margin: 0.75rem auto 0;
+  color: var(--text-main);
 }
 
 .modesGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: clamp(0.75rem, 2vw, 1rem);
 }
 
 .modeCard {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 22px;
-  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 1.25rem;
+  border: 1px solid var(--box-border);
+  border-radius: 14px;
+  background: radial-gradient(120% 70% at 50% 0%, var(--primary-light), transparent 70%), var(--theme-card-bg);
+  color: inherit;
+  text-align: left;
   cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease;
 }
 
 .modeCard:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary);
-  box-shadow: 0 18px 35px -8px rgba(79, 70, 229, 0.18);
+  border-color: var(--border-strong);
 }
 
 .cardTop {
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
 }
 
-.modeIcon {
-  font-size: 2.2rem;
-  line-height: 1;
+.modeIcon,
+.reviewIcon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border: 1px solid var(--box-border);
+  border-radius: 10px;
+  background: var(--icon-bg);
+  color: var(--text-title);
 }
 
 .modeTag {
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  background: var(--box-bg);
-  color: var(--primary);
-  border: 1px solid var(--box-border);
-  padding: 3px 10px;
-  border-radius: 9999px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
 }
 
 .modeTitle {
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: var(--text-title);
-  margin: 0;
 }
 
 .modeDesc {
   font-size: 0.88rem;
+  line-height: 1.5;
   color: var(--text-muted);
-  line-height: 1.4;
-  margin: 0;
-  flex: 1;
 }
 
 .startBtn {
-  margin-top: 8px;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: none;
-  background: var(--primary);
-  color: #ffffff;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
   font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  align-self: flex-start;
-}
-
-.modeCard:hover .startBtn {
-  filter: brightness(1.1);
-  transform: translateX(4px);
+  font-weight: 500;
+  color: var(--text-title);
 }
 
 .reviewBanner {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.08) 100%);
-  border: 1.5px solid rgba(239, 68, 68, 0.3);
-  border-radius: 18px;
-  padding: 18px 22px;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--primary);
+  border-radius: 14px;
+  background: var(--theme-card-bg);
+  box-shadow: 0 0 24px -10px var(--primary);
+  color: inherit;
+  text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.reviewBanner:hover {
-  transform: translateY(-2px);
-  border-color: var(--danger);
 }
 
 .reviewIcon {
-  font-size: 2rem;
+  color: var(--primary);
 }
 
 .reviewInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.15rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
 }
 
 .reviewInfo strong {
-  font-size: 1rem;
-  color: var(--danger);
-}
-
-.reviewInfo p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-title);
 }
 
 .reviewBtn {
-  padding: 10px 18px;
-  border-radius: 12px;
-  border: none;
-  background: var(--danger);
-  color: #ffffff;
-  font-weight: 800;
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: var(--button-bg);
+  color: var(--button-text);
   font-size: 0.88rem;
-  cursor: pointer;
-  white-space: nowrap;
+  font-weight: 600;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 640px) {
   .modesGrid {
     grid-template-columns: 1fr;
   }
   .reviewBanner {
-    flex-direction: column;
-    text-align: center;
+    flex-wrap: wrap;
   }
   .reviewBtn {
     width: 100%;
+    text-align: center;
   }
 }

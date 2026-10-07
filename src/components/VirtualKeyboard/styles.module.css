@@ -21,46 +21,40 @@
   min-width: 0;
   max-width: 2.35rem;
   height: clamp(2.3rem, 6.8vw, 2.75rem);
-  border-radius: clamp(0.35rem, 1vw, 0.45rem);
+  border-radius: clamp(0.35rem, 1vw, 0.5rem);
   background-color: var(--key-bg);
   border: 1px solid var(--key-border);
   color: var(--key-color);
-  font-size: clamp(0.75rem, 2.8vw, 0.95rem);
-  font-weight: 700;
+  font-size: clamp(0.75rem, 2.8vw, 0.92rem);
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: all 0.15s ease;
-  box-shadow: 0 2px 0 var(--key-shadow);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .key:hover:not(:disabled) {
-  filter: brightness(1.15);
-  transform: translateY(-1px);
+  border-color: var(--border-strong);
 }
 
 .key:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: none;
+  transform: scale(0.96);
 }
 
 .keyCorrect {
-  background-color: #10b981 !important;
-  border-color: #059669 !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 0 #047857 !important;
+  background-color: color-mix(in srgb, var(--success) 12%, var(--key-bg));
+  border-color: var(--success);
+  color: var(--success);
   cursor: default;
-  opacity: 0.95;
 }
 
 .keyWrong {
-  background-color: var(--box-border) !important;
-  border-color: var(--card-border) !important;
-  color: var(--text-muted) !important;
-  box-shadow: none !important;
+  background-color: transparent;
+  border-color: var(--divider);
+  color: var(--text-muted);
   cursor: default;
-  opacity: 0.4;
+  opacity: 0.45;
   text-decoration: line-through;
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { ArrowLeft, ArrowRight, Check, CircleAlert, Mic, RotateCcw, Volume2 } from "lucide-react"
 import type { Challenge } from "../../types"
 import { speakWord } from "../../utils/speech"
 import {
@@ -47,13 +48,15 @@ export function SpeechTrainer({
   if (!currentChallenge) {
     return (
       <div className={styles.endContainer}>
-        <span className={styles.endIcon}>🎙️</span>
-        <h2 className={styles.endTitle}>Treino de Pronúncia Concluído!</h2>
+        <span className={styles.endIcon} aria-hidden="true">
+          <Check size={22} strokeWidth={2} />
+        </span>
+        <h2 className={`title-display ${styles.endTitle}`}>Treino concluído</h2>
         <p className={styles.endText}>
-          Você treinou a fala de {words.length} palavras com o microfone e aprimorou seu sotaque!
+          Você treinou a pronúncia de {words.length} palavras com o microfone.
         </p>
         <button type="button" className={styles.backBtnLarge} onClick={onBack}>
-          Voltar ao Menu
+          Voltar ao menu
         </button>
       </div>
     )
@@ -96,7 +99,8 @@ export function SpeechTrainer({
       {/* Top Header */}
       <div className={styles.topRow}>
         <button type="button" className={styles.backBtn} onClick={onBack}>
-          ← Voltar
+          <ArrowLeft size={15} strokeWidth={1.75} aria-hidden="true" />
+          Voltar
         </button>
         <div className={styles.metaRow}>
           <span className={styles.themeName}>{themeTitle}</span>
@@ -109,7 +113,7 @@ export function SpeechTrainer({
       {/* Main Practice Card */}
       <div className={styles.card}>
         <span className={styles.prompt}>
-          1. Ouça a pronúncia nativa • 2. Clique no microfone e fale em voz alta
+          Ouça a pronúncia e depois fale a palavra no microfone
         </span>
 
         <div className={styles.wordBox}>
@@ -124,7 +128,8 @@ export function SpeechTrainer({
             className={styles.listenBtn}
             onClick={() => speakWord(currentChallenge.word)}
           >
-            🔊 Ouvir Pronúncia
+            <Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
+            Ouvir pronúncia
           </button>
         </div>
 
@@ -132,7 +137,10 @@ export function SpeechTrainer({
         <div className={styles.micSection}>
           {!isSupported ? (
             <div className={styles.unsupportedAlert}>
-              ⚠️ O reconhecimento de voz não é suportado pelo seu navegador atual. Recomendamos usar o Google Chrome, Edge ou Safari para treinar com o microfone.
+              <CircleAlert size={18} strokeWidth={1.75} aria-hidden="true" />
+              <span>
+                Este navegador não reconhece voz. Para treinar com o microfone, use o Google Chrome, o Edge ou o Safari.
+              </span>
             </div>
           ) : (
             <div className={styles.micControls}>
@@ -148,15 +156,15 @@ export function SpeechTrainer({
                 onClick={handleStartListening}
                 disabled={status !== "idle"}
               >
-                <span className={styles.micIcon}>
-                  {status === "listening" ? "🔴" : "🎙️"}
+                <span className={styles.micIcon} aria-hidden="true">
+                  <Mic size={26} strokeWidth={1.75} />
                 </span>
                 <span className={styles.micLabel}>
                   {status === "listening"
-                    ? "Ouvindo você... Fale agora!"
+                    ? "Ouvindo, pode falar"
                     : status === "processing"
-                    ? "Analisando pronúncia..."
-                    : "Pressione para Falar"}
+                    ? "Analisando a pronúncia"
+                    : "Toque para falar"}
                 </span>
               </button>
 
@@ -170,19 +178,19 @@ export function SpeechTrainer({
           <div className={styles.resultBox}>
             <div className={styles.scoreRow}>
               <span className={styles.scoreTitle}>
-                {result.isMatch ? "🎉 Excelente Pronúncia!" : "🔄 Vamos tentar de novo?"}
+                {result.isMatch ? "Ótima pronúncia" : "Vamos tentar de novo?"}
               </span>
               <span
                 className={`${styles.scoreTag} ${
                   result.scorePercent >= 70 ? styles.scoreGood : styles.scoreNeedsWork
                 }`}
               >
-                {result.scorePercent}% de Precisão
+                {result.scorePercent}% de precisão
               </span>
             </div>
 
             <div className={styles.transcriptBox}>
-              <span className={styles.transcriptLabel}>O que foi detectado:</span>
+              <span className={styles.transcriptLabel}>O que entendemos</span>
               <span className={styles.transcriptText}>"{result.transcript}"</span>
             </div>
 
@@ -192,7 +200,8 @@ export function SpeechTrainer({
                 className={styles.retryBtn}
                 onClick={handleStartListening}
               >
-                Tentar Falar Novamente 🎙️
+                <RotateCcw size={15} strokeWidth={1.75} aria-hidden="true" />
+                Falar de novo
               </button>
 
               <button
@@ -200,7 +209,8 @@ export function SpeechTrainer({
                 className={styles.nextBtn}
                 onClick={handleNext}
               >
-                Próxima Palavra →
+                Próxima palavra
+                <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
               </button>
             </div>
           </div>

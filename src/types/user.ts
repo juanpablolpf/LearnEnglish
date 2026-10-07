@@ -1,12 +1,10 @@
+import type { LucideIcon } from "lucide-react"
 import type { Challenge } from "./index"
-
-export type AvatarId = "🦁" | "🦊" | "🦉" | "🚀" | "👑" | "⚡" | "💎" | "🌟" | "🐱" | "🧙"
 
 export interface UserProfile {
   id: string
   name: string
   email?: string
-  avatar: AvatarId
   xp: number
   level: number
   dailyGoal: number // target words per day (e.g. 10)
@@ -28,7 +26,7 @@ export interface Achievement {
   id: string
   title: string
   description: string
-  icon: string
+  icon: LucideIcon
   requiredCount: number
   category: "words" | "streak" | "xp" | "quiz" | "speech" | "flashcards"
   xpReward: number

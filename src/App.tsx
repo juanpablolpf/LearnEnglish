@@ -1,5 +1,6 @@
 import styles from "./app.module.css"
 import { useEffect, useState, useRef, useCallback } from "react"
+import { ArrowLeft, Search, Shuffle, Target, X } from "lucide-react"
 
 import { THEME_DATA } from "./data/themeData"
 import { ofuscarExemplo } from "./utils/exampleHint"
@@ -39,9 +40,15 @@ import {
   usarDica,
   unlockPro,
 } from "./utils/auth"
-import logo from "./assets/logo.png"
 
 const MAX_LIVES = 6
+
+// Fora do componente para manter a mesma referência entre renders:
+// o quiz sorteia as opções de novo sempre que a lista muda
+const allAvailableWords = Object.values(THEME_DATA).flatMap((t) => t.words)
+const freeWords = Object.entries(THEME_DATA)
+  .filter(([key]) => FREE_THEME_KEYS.includes(key))
+  .flatMap(([, data]) => data.words)
 
 export default function App() {
   // Estado do Usuário e Gamificação
@@ -123,24 +130,16 @@ export default function App() {
     setUser(updated)
     if (valid) {
       triggerToast({
-        type: "levelup",
-        title: "Versão completa desbloqueada!",
-        subtitle: "Todos os temas e dicas ilimitadas já estão liberados.",
-        icon: "🔓",
+        type: "unlocked",
+        title: "Versão completa desbloqueada",
+        subtitle: "Todos os temas e as dicas ilimitadas já estão liberados.",
       })
     }
     return valid
   }
 
-  // Todas as palavras reunidas para o modo misto e geração do quiz
-  const allAvailableWords = Object.values(THEME_DATA).flatMap((t) => t.words)
-
   // Quem não comprou a versão completa só mistura os temas gratuitos
-  const unlockedWordsPool = user.isPro
-    ? allAvailableWords
-    : Object.entries(THEME_DATA)
-        .filter(([key]) => FREE_THEME_KEYS.includes(key))
-        .flatMap(([, data]) => data.words)
+  const unlockedWordsPool = user.isPro ? allAvailableWords : freeWords
 
   function isThemeLocked(themeKey: string): boolean {
     return !user.isPro && !FREE_THEME_KEYS.includes(themeKey)
@@ -156,7 +155,6 @@ export default function App() {
         type: "locked",
         title: theme.title,
         subtitle: "Esse tema faz parte da versão completa. Desbloqueie em Meu Perfil.",
-        icon: "🔒",
       })
       setMainTab("profile")
       return
@@ -172,7 +170,7 @@ export default function App() {
   // Iniciar modo misto (todas as palavras já desbloqueadas)
   function handleSelectMixMode(mode: StudyMode = "hangman") {
     setSelectedTheme("MIX")
-    setThemeDisplayName(user.isPro ? "Todas as Palavras 🎲" : "Palavras Grátis 🎲")
+    setThemeDisplayName(user.isPro ? "Todas as palavras" : "Palavras grátis")
     setActiveStudyMode(mode)
     const shuffled = shuffleArray(unlockedWordsPool)
     startNewThemeSession(shuffled)
@@ -182,7 +180,7 @@ export default function App() {
   function handleSelectReviewMode(mode: StudyMode = "hangman") {
     if (user.difficultWords.length === 0) return
     setSelectedTheme("REVIEW")
-    setThemeDisplayName("Revisão de Dificuldades 🎯")
+    setThemeDisplayName("Revisão das palavras difíceis")
     setActiveStudyMode(mode)
     const shuffled = shuffleArray(user.difficultWords)
     startNewThemeSession(shuffled)
@@ -240,9 +238,8 @@ export default function App() {
     if (leveledUp) {
       triggerToast({
         type: "levelup",
-        title: `Parabéns! Você alcançou o Nível ${updatedUser.level}!`,
-        subtitle: "Continue estudando para desbloquear novos títulos e liderar o ranking.",
-        icon: "🚀",
+        title: `Você chegou ao nível ${updatedUser.level}`,
+        subtitle: "Continue estudando para desbloquear novos títulos e subir no ranking.",
       })
     }
 
@@ -251,8 +248,7 @@ export default function App() {
         triggerToast({
           type: "achievement",
           title: achTitle,
-          subtitle: "Você desbloqueou uma nova conquista e ganhou XP bônus!",
-          icon: "🏆",
+          subtitle: "Você desbloqueou uma conquista e ganhou XP bônus.",
         })
       })
     }
@@ -440,7 +436,8 @@ export default function App() {
                   className={styles.backBtn}
                   onClick={() => setSelectedTheme(null)}
                 >
-                  ← Voltar aos Temas
+                  <ArrowLeft size={15} strokeWidth={1.75} aria-hidden="true" />
+                  Voltar aos temas
                 </button>
 
                 <span className={styles.themeBadge}>{themeDisplayName}</span>
@@ -450,16 +447,11 @@ export default function App() {
                 lives={livesLeft}
                 maxLives={MAX_LIVES}
                 streak={user.streak}
-                soundEnabled={user.soundEnabled}
-                isDark={user.darkMode}
-                onToggleSound={handleToggleSound}
-                onToggleTheme={handleToggleTheme}
                 onRestart={handleRestartGame}
               />
 
               <Tip
                 tip={challenge.tip}
-                themeName={themeDisplayName}
                 exampleHint={ofuscarExemplo(challenge.example, challenge.word)}
                 dicasRestantes={user.isPro ? Infinity : user.dicasRestantes}
                 onUsarDica={handleUsarDica}
@@ -512,8 +504,8 @@ export default function App() {
               {/* Campo de Palpite & Teclado Virtual */}
               <div className={styles.guessSection}>
                 <div className={styles.guessLabel}>
-                  <span>Seu Palpite</span>
-                  <span className={styles.keyboardHint}>💡 Digite no teclado físico ou virtual</span>
+                  <span>Seu palpite</span>
+                  <span className={styles.keyboardHint}>Digite no teclado físico ou no virtual</span>
                 </div>
 
                 <div className={styles.guessControls}>
@@ -601,14 +593,15 @@ export default function App() {
         {mainTab === "learn" && (
           <>
             <div className={styles.themeHeader}>
-              <img src={logo} alt="Learn English Logo" className={styles.themeHeroLogo} />
-              <h1 className={styles.themeTitle}>Aprenda Inglês por Temas</h1>
+              <div className={styles.spotlight} aria-hidden="true" />
+              <h1 className={`title-display ${styles.themeTitle}`}>Aprenda inglês por temas</h1>
+              <div className={styles.titleShadow} aria-hidden="true" />
               <p className={styles.themeSubtitle}>
                 {allAvailableWords.length} palavras em 16 categorias com fonética nativa e frases
               </p>
               {!user.isPro && (
                 <p className={styles.themeSubtitlePro}>
-                  🔓 {FREE_THEME_KEYS.length} temas grátis para experimentar · o restante faz parte da versão completa
+                  {FREE_THEME_KEYS.length} temas grátis para experimentar. Os outros fazem parte da versão completa.
                 </p>
               )}
             </div>
@@ -616,25 +609,25 @@ export default function App() {
             {/* Estatísticas Rápidas */}
             <div className={styles.statsSummary}>
               <div className={styles.statBox}>
-                <span className={styles.statValue}>🔥 {user.streak}</span>
-                <span className={styles.statLabel}>Ofensiva Atual</span>
+                <span className={`${styles.statValue} ${styles.statStreak}`}>{user.streak}</span>
+                <span className={styles.statLabel}>Ofensiva atual</span>
               </div>
               <div className={styles.statBox}>
-                <span className={styles.statValue}>⚡ {user.xp}</span>
-                <span className={styles.statLabel}>XP Total</span>
+                <span className={`${styles.statValue} ${styles.statXp}`}>{user.xp}</span>
+                <span className={styles.statLabel}>XP total</span>
               </div>
               <div className={styles.statBox}>
-                <span className={styles.statValue}>📚 {totalLearned}</span>
-                <span className={styles.statLabel}>Palavras Dominadas</span>
+                <span className={`${styles.statValue} ${styles.statWords}`}>{totalLearned}</span>
+                <span className={styles.statLabel}>Palavras dominadas</span>
               </div>
             </div>
 
             {/* Barra de Pesquisa de Temas */}
             <div className={styles.searchFilterBar}>
-              <span className={styles.searchIcon}>🔍</span>
+              <Search className={styles.searchIcon} size={17} strokeWidth={1.75} aria-hidden="true" />
               <input
                 type="text"
-                placeholder="Pesquisar tema ou palavra (ex: Verbos, Viagens, Compras...)"
+                placeholder="Pesquisar tema ou palavra"
                 className={styles.searchInput}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -644,8 +637,9 @@ export default function App() {
                   type="button"
                   className={styles.clearSearchBtn}
                   onClick={() => setSearchQuery("")}
+                  aria-label="Limpar pesquisa"
                 >
-                  ✕
+                  <X size={16} aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -654,11 +648,13 @@ export default function App() {
             <div className={styles.themesList}>
               {filteredThemes.map(([key, data]) => {
                 const completedCount = (user.completedWordIds[key] || []).length
+                const ThemeIcon = data.icon
                 return (
                   <ThemeCard
                     key={key}
                     title={data.title}
-                    icon={data.icon}
+                    icon={<ThemeIcon size={19} strokeWidth={1.6} />}
+                    accent={data.color}
                     description={data.desc}
                     totalWords={data.words.length}
                     completedWords={completedCount}
@@ -672,7 +668,7 @@ export default function App() {
               {user.difficultWords.length > 0 && !searchQuery && (
                 <ThemeCard
                   title="Revisar Palavras Difíceis"
-                  icon="🎯"
+                  icon={<Target size={19} strokeWidth={1.6} />}
                   description="Treine novamente as palavras que você errou"
                   totalWords={user.difficultWords.length}
                   completedWords={0}
@@ -685,10 +681,11 @@ export default function App() {
             {/* Ações Rápidas */}
             <div className={styles.quickActions}>
               <Button
+                icon={<Shuffle size={17} strokeWidth={1.75} />}
                 title={
                   user.isPro
-                    ? `🎲 Modo Misto (Misturar Todas as ${allAvailableWords.length} Palavras)`
-                    : `🎲 Modo Misto (${unlockedWordsPool.length} Palavras Grátis)`
+                    ? `Modo misto, com as ${allAvailableWords.length} palavras`
+                    : `Modo misto, com as ${unlockedWordsPool.length} palavras grátis`
                 }
                 variant="outline"
                 onClick={() => handleSelectMixMode("hangman")}

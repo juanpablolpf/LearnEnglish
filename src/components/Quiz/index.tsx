@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react"
 import type { Challenge } from "../../types"
 import { speakWord } from "../../utils/speech"
 import { sounds } from "../../utils/soundEffects"
+import { ArrowLeft, ArrowRight, Check, Flame, Trophy, Volume2, X } from "lucide-react"
 import styles from "./styles.module.css"
 
 type Props = {
@@ -58,17 +59,19 @@ export function Quiz({
   if (!currentChallenge) {
     return (
       <div className={styles.endContainer}>
-        <span className={styles.endIcon}>🏆</span>
-        <h2 className={styles.endTitle}>Quiz Finalizado!</h2>
+        <span className={styles.endIcon} aria-hidden="true">
+          <Trophy size={22} strokeWidth={1.75} />
+        </span>
+        <h2 className={`title-display ${styles.endTitle}`}>Quiz finalizado</h2>
         <div className={styles.endScoreBox}>
           <span className={styles.scoreVal}>{score} / {words.length}</span>
-          <span className={styles.scoreLbl}>Acertos Totais</span>
+          <span className={styles.scoreLbl}>Acertos</span>
         </div>
         <p className={styles.endText}>
-          Excelente desempenho! Você praticou seu vocabulário e ganhou pontos para o seu ranking!
+          Você praticou o vocabulário e ganhou pontos para o ranking.
         </p>
         <button type="button" className={styles.backBtnLarge} onClick={onBack}>
-          Voltar ao Menu
+          Voltar ao menu
         </button>
       </div>
     )
@@ -103,11 +106,15 @@ export function Quiz({
       {/* Top Header */}
       <div className={styles.topRow}>
         <button type="button" className={styles.backBtn} onClick={onBack}>
-          ← Voltar
+          <ArrowLeft size={15} strokeWidth={1.75} aria-hidden="true" />
+          Voltar
         </button>
         <div className={styles.metaRow}>
           <span className={styles.themeName}>{themeTitle}</span>
-          <span className={styles.streakPill}>🔥 {streak}</span>
+          <span className={styles.streakPill} title="Acertos seguidos">
+            <Flame size={14} strokeWidth={1.75} aria-hidden="true" />
+            {streak}
+          </span>
           <span className={styles.counter}>
             Questão {index + 1} de {words.length}
           </span>
@@ -129,7 +136,8 @@ export function Quiz({
             onClick={() => speakWord(currentChallenge.word)}
             title="Ouvir novamente"
           >
-            🔊 Ouvir Áudio
+            <Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
+            Ouvir áudio
           </button>
         </div>
 
@@ -169,17 +177,19 @@ export function Quiz({
           <div className={styles.feedbackSection}>
             {selectedOption === currentChallenge.tip ? (
               <div className={styles.correctFeedback}>
-                <span>✅ Resposta Correta! (+20 XP)</span>
+                <Check size={16} strokeWidth={2} aria-hidden="true" />
+                <span>Resposta certa (+20 XP)</span>
               </div>
             ) : (
               <div className={styles.wrongFeedback}>
-                <span>❌ Resposta Incorreta! A resposta era: <strong>{currentChallenge.tip}</strong></span>
+                <X size={16} strokeWidth={2} aria-hidden="true" />
+                <span>Resposta errada. A certa era <strong>{currentChallenge.tip}</strong></span>
               </div>
             )}
 
             {currentChallenge.example && (
               <div className={styles.exampleSentence}>
-                <p>💬 <strong>"{currentChallenge.example}"</strong></p>
+                <p className={styles.exampleEn}>"{currentChallenge.example}"</p>
                 {currentChallenge.examplePt && <p className={styles.examplePt}>"{currentChallenge.examplePt}"</p>}
               </div>
             )}
@@ -190,7 +200,8 @@ export function Quiz({
               onClick={handleNextQuestion}
               autoFocus
             >
-              Próxima Questão →
+              Próxima questão
+              <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
             </button>
           </div>
         )}

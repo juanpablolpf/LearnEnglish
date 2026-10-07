@@ -1,9 +1,10 @@
+import type { ReactNode } from "react"
 import styles from "./styles.module.css"
 
 type Props = React.ComponentProps<"button"> & {
   title: string
   variant?: "primary" | "secondary" | "danger" | "outline"
-  icon?: string
+  icon?: ReactNode
 }
 
 export function Button({

@@ -1,23 +1,10 @@
-import type { UserProfile, AvatarId, Challenge } from "../types"
+import type { UserProfile, Challenge } from "../types"
 import { checkAndUnlockAchievements } from "./achievements"
 import { isValidProCode } from "./license"
 
 const CURRENT_USER_KEY = "learn_english_current_user_v2"
 const USERS_LIST_KEY = "learn_english_users_list_v2"
 export const DICAS_INICIAIS = 3
-
-export const AVAILABLE_AVATARS: { id: AvatarId; name: string }[] = [
-  { id: "🦁", name: "Leão" },
-  { id: "🦊", name: "Raposa" },
-  { id: "🦉", name: "Coruja" },
-  { id: "🚀", name: "Foguete" },
-  { id: "👑", name: "Coroa" },
-  { id: "⚡", name: "Raio" },
-  { id: "💎", name: "Diamante" },
-  { id: "🌟", name: "Estrela" },
-  { id: "🐱", name: "Gato" },
-  { id: "🧙", name: "Mago" },
-]
 
 function getTodayString(): string {
   return new Date().toISOString().split("T")[0]
@@ -42,11 +29,10 @@ export function calculateLevel(xp: number): { level: number; title: string; prog
   return { level, title, progressPercent, nextLevelXp }
 }
 
-export function createDefaultUser(name: string, avatar: AvatarId = "🦁", isGuest = false): UserProfile {
+export function createDefaultUser(name: string, isGuest = false): UserProfile {
   return {
     id: "user_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
     name: name.trim() || (isGuest ? "Visitante" : "Estudante"),
-    avatar,
     xp: 0,
     level: 1,
     dailyGoal: 10,
@@ -58,7 +44,7 @@ export function createDefaultUser(name: string, avatar: AvatarId = "🦁", isGue
     completedWordIds: {},
     difficultWords: [],
     soundEnabled: true,
-    darkMode: false,
+    darkMode: true,
     isGuest,
     dicasRestantes: DICAS_INICIAIS,
     isPro: false,
@@ -92,7 +78,7 @@ export function getCurrentUser(): UserProfile {
   }
 
   // Se não existir, cria perfil inicial
-  const defaultUser = createDefaultUser("Estudante", "🦁", true)
+  const defaultUser = createDefaultUser("Estudante", true)
   saveCurrentUser(defaultUser)
   return defaultUser
 }
@@ -224,8 +210,8 @@ export function loginAsUser(userId: string): UserProfile {
   return getCurrentUser()
 }
 
-export function registerNewUser(name: string, avatar: AvatarId = "🦁"): UserProfile {
-  const newUser = createDefaultUser(name, avatar, false)
+export function registerNewUser(name: string): UserProfile {
+  const newUser = createDefaultUser(name)
   const users = getAllUsers()
   users.push(newUser)
   localStorage.setItem(USERS_LIST_KEY, JSON.stringify(users))
@@ -237,7 +223,7 @@ export function deleteUserProfile(userId: string): UserProfile {
   let users = getAllUsers()
   users = users.filter((u) => u.id !== userId)
   if (users.length === 0) {
-    const defaultUser = createDefaultUser("Estudante", "🦁", true)
+    const defaultUser = createDefaultUser("Estudante", true)
     users = [defaultUser]
   }
   localStorage.setItem(USERS_LIST_KEY, JSON.stringify(users))
@@ -247,114 +233,25 @@ export function deleteUserProfile(userId: string): UserProfile {
 }
 
 export interface LeaderboardEntry {
-  rank: number
   id: string
   name: string
-  avatar: AvatarId
   level: number
-  levelTitle: string
   xp: number
   streak: number
   wordsLearned: number
   isCurrentUser: boolean
-  isTopPerformer: boolean
 }
-
-// Alunos de exemplo para inspirar a comunidade e preencher o ranking
-const SAMPLE_COMMUNITY_STUDENTS: Partial<UserProfile>[] = [
-  {
-    id: "sample_sarah",
-    name: "Sarah Jenkins",
-    avatar: "👑",
-    xp: 3450,
-    streak: 18,
-    completedWordIds: { Daily: Array.from({ length: 48 }, (_, i) => i + 1), Travel: Array.from({ length: 42 }, (_, i) => i + 1) },
-  },
-  {
-    id: "sample_pedro",
-    name: "Pedro Henrique",
-    avatar: "🚀",
-    xp: 2120,
-    streak: 12,
-    completedWordIds: { Tech: Array.from({ length: 45 }, (_, i) => i + 1), Work: Array.from({ length: 35 }, (_, i) => i + 1) },
-  },
-  {
-    id: "sample_elena",
-    name: "Elena Rostova",
-    avatar: "💎",
-    xp: 1560,
-    streak: 8,
-    completedWordIds: { Food: Array.from({ length: 38 }, (_, i) => i + 1) },
-  },
-  {
-    id: "sample_lucas",
-    name: "Lucas Mendes",
-    avatar: "⚡",
-    xp: 890,
-    streak: 5,
-    completedWordIds: { Verbs: Array.from({ length: 30 }, (_, i) => i + 1) },
-  },
-]
 
 export function getLeaderboard(currentUser: UserProfile): LeaderboardEntry[] {
-  const localUsers = getAllUsers()
-  
-  // Combina usuários locais com alunos da comunidade
-  const combinedMap = new Map<string, { user: UserProfile; isSample: boolean }>()
-  
-  localUsers.forEach((u) => {
-    combinedMap.set(u.id, { user: u, isSample: false })
-  })
-
-  // Adiciona os alunos modelo se não houver conflito de ID
-  SAMPLE_COMMUNITY_STUDENTS.forEach((sample) => {
-    if (!combinedMap.has(sample.id!)) {
-      const sampleUser = createDefaultUser(sample.name!, sample.avatar || "🌟", false)
-      sampleUser.id = sample.id!
-      sampleUser.xp = sample.xp || 0
-      sampleUser.streak = sample.streak || 0
-      sampleUser.completedWordIds = sample.completedWordIds || {}
-      sampleUser.level = calculateLevel(sampleUser.xp).level
-      combinedMap.set(sample.id!, { user: sampleUser, isSample: true })
-    }
-  })
-
-  const rawList = Array.from(combinedMap.values()).map(({ user }) => {
-    const totalWords = Object.values(user.completedWordIds).reduce(
-      (acc, list) => acc + list.length,
-      0
-    )
-    const levelInfo = calculateLevel(user.xp)
-    return {
-      id: user.id,
-      name: user.name,
-      avatar: user.avatar,
-      level: levelInfo.level,
-      levelTitle: levelInfo.title,
-      xp: user.xp,
-      streak: user.streak,
-      wordsLearned: totalWords,
-      isCurrentUser: user.id === currentUser.id,
-      isTopPerformer: false,
-    }
-  })
-
-  // Ordena por XP decrescente, depois por streak decrescente
-  rawList.sort((a, b) => b.xp - a.xp || b.streak - a.streak)
-
-  // Atribui posições (Ranks)
-  return rawList.map((entry, index) => ({
-    ...entry,
-    rank: index + 1,
-    isTopPerformer: index === 0,
+  return getAllUsers().map((user) => ({
+    id: user.id,
+    name: user.name,
+    level: calculateLevel(user.xp).level,
+    xp: user.xp,
+    streak: user.streak,
+    wordsLearned: Object.values(user.completedWordIds).reduce((acc, list) => acc + list.length, 0),
+    isCurrentUser: user.id === currentUser.id,
   }))
-}
-
-export function updateUserAvatar(avatar: AvatarId): UserProfile {
-  const user = getCurrentUser()
-  user.avatar = avatar
-  saveCurrentUser(user)
-  return user
 }
 
 export function updateUserName(name: string): UserProfile {

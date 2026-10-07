@@ -1,70 +1,60 @@
 .button {
-  height: 2.85rem;
-  border-radius: 0.65rem;
-  border: none;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
   padding: 0 1.25rem;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   user-select: none;
 }
 
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
 .button:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
 }
 
 .primary {
-  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+  background: var(--button-bg);
+  color: var(--button-text);
 }
 
 .primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.35);
+  opacity: 0.9;
 }
 
-.secondary {
-  background-color: #f1f5f9;
-  color: #334155;
-  border: 1px solid #cbd5e1;
+.secondary,
+.outline {
+  background: transparent;
+  color: var(--text-title);
+  border-color: var(--border-strong);
 }
 
-.secondary:hover:not(:disabled) {
-  background-color: #e2e8f0;
-  transform: translateY(-1px);
+.secondary:hover:not(:disabled),
+.outline:hover:not(:disabled) {
+  background: var(--primary-light);
 }
 
 .danger {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+  background: transparent;
+  color: var(--danger);
+  border-color: var(--danger);
 }
 
 .danger:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(239, 68, 68, 0.3);
-}
-
-.outline {
-  background: transparent;
-  color: #6366f1;
-  border: 1.5px solid #c7d2fe;
-}
-
-.outline:hover:not(:disabled) {
-  background: #eef2ff;
-  border-color: #818cf8;
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
 }
 
 .icon {
+  display: inline-flex;
   font-size: 1.1rem;
 }

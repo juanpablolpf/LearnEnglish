@@ -1,142 +1,126 @@
 .card {
+  --accent: var(--primary);
   width: 100%;
   display: flex;
-  align-items: center;
-  gap: 1.25rem;
+  align-items: flex-start;
+  gap: 1rem;
   background: var(--theme-card-bg);
-  border: 1.5px solid var(--box-border);
-  border-radius: 1rem;
-  padding: 1.25rem;
+  border: 1px solid var(--box-border);
+  border-radius: 14px;
+  padding: 1.1rem 1.15rem;
   cursor: pointer;
   text-align: left;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  color: inherit;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  border-color: var(--primary);
-  box-shadow: 0 12px 20px -5px rgba(99, 102, 241, 0.25);
-}
-
-.cardReview {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border-color: #f59e0b;
-}
-
-:global([data-theme="dark"]) .cardReview {
-  background: linear-gradient(135deg, #291e0a 0%, #3d2c0b 100%);
-  border-color: #f59e0b;
-}
-
-.cardReview:hover {
-  border-color: #d97706;
-  box-shadow: 0 12px 20px -5px rgba(245, 158, 11, 0.3);
-}
-
-.cardLocked {
-  opacity: 0.72;
-}
-
-.cardLocked:hover {
-  border-color: var(--box-border);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-.cardLocked .iconWrapper {
-  background: var(--icon-bg);
-  filter: grayscale(1);
-}
-
-.lockedBadge {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  background: var(--icon-bg);
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  border: 1px solid var(--box-border);
-  white-space: nowrap;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%), var(--theme-card-bg);
 }
 
 .iconWrapper {
-  font-size: 2.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  background: var(--icon-bg);
-  border-radius: 0.85rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent-ink, var(--accent));
   flex-shrink: 0;
 }
 
-.cardReview .iconWrapper {
-  background: #fef08a;
+.cardReview {
+  border-color: var(--primary);
+  box-shadow: 0 0 24px -10px var(--primary);
 }
 
-:global([data-theme="dark"]) .cardReview .iconWrapper {
-  background: #78350f;
+.cardReview .iconWrapper {
+  color: var(--primary);
+}
+
+.cardLocked .iconWrapper {
+  opacity: 0.85;
+}
+
+.cardLocked .title {
+  color: var(--text-main);
 }
 
 .content {
   flex: 1;
+  min-width: 0;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+  gap: 0.75rem;
   margin-bottom: 0.25rem;
 }
 
 .title {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
   color: var(--text-title);
 }
 
-.badge {
+.badge,
+.reviewBadge,
+.lockedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
   font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--primary);
-  background: var(--primary-light);
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  border: 1px solid var(--primary);
+  white-space: nowrap;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .reviewBadge {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #b45309;
-  background: #fde68a;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-}
-
-:global([data-theme="dark"]) .reviewBadge {
-  color: #fef3c7;
-  background: #92400e;
+  color: var(--primary);
 }
 
 .description {
   font-size: 0.85rem;
+  line-height: 1.45;
   color: var(--text-muted);
-  margin-bottom: 0.6rem;
 }
 
 .progressContainer {
   width: 100%;
-  height: 6px;
-  background: var(--icon-bg);
+  height: 3px;
+  margin-top: 0.75rem;
+  background: var(--divider);
   border-radius: 9999px;
   overflow: hidden;
 }
 
 .progressBar {
   height: 100%;
-  background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+  background: var(--accent);
   border-radius: 9999px;
   transition: width 0.4s ease;
+}
+
+/* No celular o cadeado basta, para o nome do tema caber numa linha */
+@media (max-width: 480px) {
+  .lockedText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* No tema claro a cor do ícone escurece um pouco para ler bem no branco */
+:global([data-theme="light"]) .iconWrapper {
+  --accent-ink: color-mix(in srgb, var(--accent) 65%, #000);
 }

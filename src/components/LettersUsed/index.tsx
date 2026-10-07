@@ -14,7 +14,7 @@ export function LettersUsed({ data }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h5>Letras Tentadas ({data.length})</h5>
+        <h5>Letras tentadas ({data.length})</h5>
         {wrongLetters.length > 0 && (
           <span className={styles.wrongCount}>
             {wrongLetters.length} {wrongLetters.length === 1 ? "erro" : "erros"}

@@ -1,3 +1,4 @@
+import { ArrowRight, Layers, Mic, Target, Type, Zap, type LucideIcon } from "lucide-react"
 import type { StudyMode } from "../../types"
 import styles from "./styles.module.css"
 
@@ -7,94 +8,96 @@ type Props = {
   onSelectMode: (mode: StudyMode) => void
 }
 
-export function PracticeHub({ totalWords, difficultWordsCount, onSelectMode }: Props) {
-  const studyModes: {
-    id: StudyMode
-    title: string
-    icon: string
-    tag: string
-    description: string
-    color: string
-  }[] = [
-    {
-      id: "hangman",
-      title: "Jogo da Forca",
-      icon: "🔤",
-      tag: "Clássico & Vocabulário",
-      description: "Adivinhe as letras da palavra com teclado físico ou virtual e dicas práticas.",
-      color: "var(--primary)",
-    },
-    {
-      id: "flashcards",
-      title: "Flashcards 3D",
-      icon: "📇",
-      tag: "Memorização Ativa",
-      description: "Vire os cartões para ver fonética, tradução e exemplos com pronúncia nativa.",
-      color: "#10b981",
-    },
-    {
-      id: "quiz",
-      title: "Quiz Rápido",
-      icon: "⚡",
-      tag: "Desafio de 4 Opções",
-      description: "Teste seu reflexo escolhendo a tradução correta entre 4 alternativas cronometradas.",
-      color: "#f59e0b",
-    },
-    {
-      id: "speech",
-      title: "Treino de Voz & Pronúncia",
-      icon: "🎙️",
-      tag: "Fale no Microfone",
-      description: "Ouça a pronúncia americana e fale pelo microfone para receber nota em tempo real!",
-      color: "#ec4899",
-    },
-  ]
+const STUDY_MODES: {
+  id: StudyMode
+  title: string
+  icon: LucideIcon
+  tag: string
+  description: string
+}[] = [
+  {
+    id: "hangman",
+    title: "Jogo da forca",
+    icon: Type,
+    tag: "Vocabulário",
+    description: "Adivinhe as letras da palavra com o teclado físico ou o virtual, com dicas.",
+  },
+  {
+    id: "flashcards",
+    title: "Flashcards",
+    icon: Layers,
+    tag: "Memorização",
+    description: "Vire os cartões para ver fonética, tradução e exemplos com pronúncia nativa.",
+  },
+  {
+    id: "quiz",
+    title: "Quiz rápido",
+    icon: Zap,
+    tag: "4 opções",
+    description: "Escolha a tradução certa entre 4 alternativas, contra o relógio.",
+  },
+  {
+    id: "speech",
+    title: "Treino de pronúncia",
+    icon: Mic,
+    tag: "Microfone",
+    description: "Ouça a pronúncia americana e fale no microfone para receber uma nota na hora.",
+  },
+]
 
+export function PracticeHub({ totalWords, difficultWordsCount, onSelectMode }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <span className={styles.headerBadge}>
-          🎮 Central de Treinamento • {totalWords} Palavras Disponíveis
-        </span>
-        <h2 className={styles.title}>Escolha seu Modo de Estudo</h2>
+        <div className={styles.spotlight} aria-hidden="true" />
+        <h2 className={`title-display ${styles.title}`}>Escolha como estudar</h2>
         <p className={styles.subtitle}>
-          Alterne entre diferentes métodos de aprendizagem para acelerar sua fluência no inglês.
+          {totalWords} palavras disponíveis. Alterne entre os modos para fixar o vocabulário mais rápido.
         </p>
       </div>
 
       <div className={styles.modesGrid}>
-        {studyModes.map((mode) => (
-          <div
-            key={mode.id}
+        {STUDY_MODES.map(({ id, title, icon: Icon, tag, description }) => (
+          <button
+            key={id}
+            type="button"
             className={styles.modeCard}
-            onClick={() => onSelectMode(mode.id)}
+            onClick={() => onSelectMode(id)}
           >
             <div className={styles.cardTop}>
-              <span className={styles.modeIcon}>{mode.icon}</span>
-              <span className={styles.modeTag}>{mode.tag}</span>
+              <span className={styles.modeIcon} aria-hidden="true">
+                <Icon size={19} strokeWidth={1.6} />
+              </span>
+              <span className={styles.modeTag}>{tag}</span>
             </div>
 
-            <h3 className={styles.modeTitle}>{mode.title}</h3>
-            <p className={styles.modeDesc}>{mode.description}</p>
+            <h3 className={styles.modeTitle}>{title}</h3>
+            <p className={styles.modeDesc}>{description}</p>
 
-            <button type="button" className={styles.startBtn}>
-              Iniciar Treino →
-            </button>
-          </div>
+            <span className={styles.startBtn}>
+              Começar <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
+            </span>
+          </button>
         ))}
       </div>
 
       {difficultWordsCount > 0 && (
-        <div className={styles.reviewBanner} onClick={() => onSelectMode("flashcards")}>
-          <div className={styles.reviewIcon}>🎯</div>
-          <div className={styles.reviewInfo}>
-            <strong>Você tem {difficultWordsCount} palavras para revisar</strong>
-            <p>Pratique as palavras que você errou recentemente para fixar no vocabulário.</p>
-          </div>
-          <button type="button" className={styles.reviewBtn}>
-            Revisar Agora ⚡
-          </button>
-        </div>
+        <button
+          type="button"
+          className={styles.reviewBanner}
+          onClick={() => onSelectMode("flashcards")}
+        >
+          <span className={styles.reviewIcon} aria-hidden="true">
+            <Target size={19} strokeWidth={1.6} />
+          </span>
+          <span className={styles.reviewInfo}>
+            <strong>
+              {difficultWordsCount} {difficultWordsCount === 1 ? "palavra" : "palavras"} para revisar
+            </strong>
+            <span>Pratique as palavras que você errou recentemente.</span>
+          </span>
+          <span className={styles.reviewBtn}>Revisar agora</span>
+        </button>
       )}
     </div>
   )

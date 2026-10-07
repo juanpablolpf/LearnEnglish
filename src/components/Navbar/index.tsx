@@ -1,6 +1,8 @@
+import { BookOpen, ChevronDown, Flame, Gamepad2, Medal, Target, Trophy, User, Volume2, VolumeX } from "lucide-react"
 import type { UserProfile, MainTab } from "../../types"
 import { calculateLevel } from "../../utils/auth"
 import { ThemeToggle } from "../ThemeToggle"
+import { Avatar } from "../Avatar"
 import logo from "../../assets/logo.png"
 import styles from "./styles.module.css"
 
@@ -32,7 +34,6 @@ export function Navbar({
           <img src={logo} alt="Learn English Logo" className={styles.logo} />
           <div className={styles.brandText}>
             <span className={styles.brandTitle}>Learn English</span>
-            <span className={styles.brandTag}>Pro Fluency</span>
           </div>
         </div>
 
@@ -54,7 +55,7 @@ export function Navbar({
 
           {/* Ofensiva (Streak) */}
           <div className={styles.statPill} title="Sequência de acertos seguidos">
-            <span className={styles.statIcon}>🔥</span>
+            <Flame className={`${styles.statIcon} ${styles.iconStreak}`} size={16} strokeWidth={1.75} aria-hidden="true" />
             <span className={styles.statNumber}>{user.streak}</span>
           </div>
 
@@ -63,7 +64,7 @@ export function Navbar({
             className={styles.statPill}
             title={`Meta diária: ${user.todayWordsLearned} de ${user.dailyGoal} palavras hoje (${goalPercent}%)`}
           >
-            <span className={styles.statIcon}>🎯</span>
+            <Target className={`${styles.statIcon} ${styles.iconGoal}`} size={16} strokeWidth={1.75} aria-hidden="true" />
             <span className={styles.statNumber}>
               {user.todayWordsLearned}/{user.dailyGoal}
             </span>
@@ -78,10 +79,10 @@ export function Navbar({
             onClick={onOpenLogin}
             title="Clique para trocar de aluno ou gerenciar perfis"
           >
-            <span className={styles.userAvatarEmoji}>{user.avatar}</span>
+            <Avatar name={user.name} />
             <div className={styles.userMeta}>
               <span className={styles.userName}>{user.name}</span>
-              <span className={styles.userSub}>Trocar Aluno ▾</span>
+              <span className={styles.userSub}>Trocar aluno <ChevronDown size={12} aria-hidden="true" /></span>
             </div>
           </button>
 
@@ -93,8 +94,11 @@ export function Navbar({
               className={styles.iconBtn}
               onClick={onToggleSound}
               title={user.soundEnabled ? "Desativar sons" : "Ativar sons"}
+              aria-label={user.soundEnabled ? "Desativar sons" : "Ativar sons"}
             >
-              {user.soundEnabled ? "🔊" : "🔇"}
+              {user.soundEnabled
+                ? <Volume2 size={17} strokeWidth={1.75} aria-hidden="true" />
+                : <VolumeX size={17} strokeWidth={1.75} aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -107,7 +111,7 @@ export function Navbar({
           className={`${styles.tabItem} ${currentTab === "learn" ? styles.activeTab : ""}`}
           onClick={() => onSelectTab("learn")}
         >
-          <span className={styles.tabIcon}>📚</span>
+          <BookOpen className={styles.tabIcon} size={17} strokeWidth={1.75} aria-hidden="true" />
           <span className={styles.tabText}>Aprender</span>
         </button>
 
@@ -116,7 +120,7 @@ export function Navbar({
           className={`${styles.tabItem} ${currentTab === "practice" ? styles.activeTab : ""}`}
           onClick={() => onSelectTab("practice")}
         >
-          <span className={styles.tabIcon}>🎮</span>
+          <Gamepad2 className={styles.tabIcon} size={17} strokeWidth={1.75} aria-hidden="true" />
           <span className={styles.tabText}>Praticar</span>
         </button>
 
@@ -125,7 +129,7 @@ export function Navbar({
           className={`${styles.tabItem} ${currentTab === "ranking" ? styles.activeTab : ""}`}
           onClick={() => onSelectTab("ranking")}
         >
-          <span className={styles.tabIcon}>🏆</span>
+          <Trophy className={styles.tabIcon} size={17} strokeWidth={1.75} aria-hidden="true" />
           <span className={styles.tabText}>Ranking</span>
         </button>
 
@@ -134,7 +138,7 @@ export function Navbar({
           className={`${styles.tabItem} ${currentTab === "achievements" ? styles.activeTab : ""}`}
           onClick={() => onSelectTab("achievements")}
         >
-          <span className={styles.tabIcon}>🥇</span>
+          <Medal className={styles.tabIcon} size={17} strokeWidth={1.75} aria-hidden="true" />
           <span className={styles.tabText}>Conquistas</span>
         </button>
 
@@ -143,7 +147,7 @@ export function Navbar({
           className={`${styles.tabItem} ${currentTab === "profile" ? styles.activeTab : ""}`}
           onClick={() => onSelectTab("profile")}
         >
-          <span className={styles.tabIcon}>👤</span>
+          <User className={styles.tabIcon} size={17} strokeWidth={1.75} aria-hidden="true" />
           <span className={styles.tabText}>Meu Perfil</span>
         </button>
       </div>

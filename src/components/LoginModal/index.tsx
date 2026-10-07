@@ -1,6 +1,8 @@
 import { useState } from "react"
-import type { UserProfile, AvatarId } from "../../types"
-import { AVAILABLE_AVATARS, getAllUsers, loginAsUser, registerNewUser, calculateLevel } from "../../utils/auth"
+import { ArrowRight, Plus, X } from "lucide-react"
+import type { UserProfile } from "../../types"
+import { getAllUsers, loginAsUser, registerNewUser, calculateLevel } from "../../utils/auth"
+import { Avatar } from "../Avatar"
 import styles from "./styles.module.css"
 
 type Props = {
@@ -13,7 +15,6 @@ type Props = {
 export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Props) {
   const [tab, setTab] = useState<"switch" | "create">("switch")
   const [name, setName] = useState("")
-  const [selectedAvatar, setSelectedAvatar] = useState<AvatarId>("🦁")
   const [error, setError] = useState("")
 
   if (!isOpen) return null
@@ -29,11 +30,11 @@ export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Prop
   function handleCreate(e: React.FormEvent) {
     e.preventDefault()
     if (!name.trim()) {
-      setError("Por favor, digite o nome do aluno.")
+      setError("Digite o nome do aluno.")
       return
     }
     setError("")
-    const created = registerNewUser(name.trim(), selectedAvatar)
+    const created = registerNewUser(name.trim())
     onUserChanged(created)
     setName("")
     onClose()
@@ -41,14 +42,17 @@ export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Prop
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="login-title"
+      >
         <div className={styles.header}>
-          <div className={styles.headerTitle}>
-            <span className={styles.headerIcon}>🎓</span>
-            <h2>Área do Aluno</h2>
-          </div>
-          <button type="button" className={styles.closeBtn} onClick={onClose}>
-            ✕
+          <h2 className={`title-display ${styles.title}`} id="login-title">Área do aluno</h2>
+          <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Fechar">
+            <X size={17} strokeWidth={1.75} aria-hidden="true" />
           </button>
         </div>
 
@@ -58,21 +62,21 @@ export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Prop
             className={`${styles.tabBtn} ${tab === "switch" ? styles.activeTab : ""}`}
             onClick={() => setTab("switch")}
           >
-            👥 Trocar de Aluno ({allUsers.length})
+            Trocar de aluno ({allUsers.length})
           </button>
           <button
             type="button"
             className={`${styles.tabBtn} ${tab === "create" ? styles.activeTab : ""}`}
             onClick={() => setTab("create")}
           >
-            ➕ Novo Aluno
+            Novo aluno
           </button>
         </div>
 
         {tab === "switch" ? (
           <div className={styles.switchSection}>
             <p className={styles.sectionDesc}>
-              Selecione seu perfil para continuar de onde parou ou adicione um novo:
+              Escolha o seu perfil para continuar de onde parou.
             </p>
 
             <div className={styles.usersList}>
@@ -85,32 +89,28 @@ export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Prop
                 )
 
                 return (
-                  <div
+                  <button
                     key={user.id}
+                    type="button"
                     className={`${styles.userCard} ${isSelected ? styles.selectedCard : ""}`}
                     onClick={() => handleSwitch(user.id)}
                   >
-                    <div className={styles.userAvatar}>{user.avatar}</div>
-                    <div className={styles.userInfo}>
-                      <div className={styles.userNameRow}>
+                    <Avatar name={user.name} size={38} />
+                    <span className={styles.userInfo}>
+                      <span className={styles.userNameRow}>
                         <strong>{user.name}</strong>
                         {isSelected && <span className={styles.currentBadge}>Ativo</span>}
-                      </div>
-                      <span className={styles.userStats}>
-                        ⭐ Nível {levelInfo.level} ({levelInfo.title}) • 🔥 {user.streak} streak • 📚 {totalWords} palavras
                       </span>
-                    </div>
-                    <button
-                      type="button"
-                      className={styles.selectBtn}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleSwitch(user.id)
-                      }}
-                    >
-                      {isSelected ? "Selecionado" : "Entrar →"}
-                    </button>
-                  </div>
+                      <span className={styles.userStats}>
+                        Nível {levelInfo.level}, {levelInfo.title}. {user.streak} de ofensiva, {totalWords} palavras
+                      </span>
+                    </span>
+                    <span className={styles.selectBtn}>
+                      {isSelected ? "Selecionado" : (
+                        <>Entrar <ArrowRight size={14} strokeWidth={1.75} aria-hidden="true" /></>
+                      )}
+                    </span>
+                  </button>
                 )
               })}
             </div>
@@ -120,22 +120,24 @@ export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Prop
               className={styles.newAccountPrompt}
               onClick={() => setTab("create")}
             >
-              + Criar Perfil para Outro Aluno
+              <Plus size={15} strokeWidth={1.75} aria-hidden="true" />
+              Criar perfil para outro aluno
             </button>
           </div>
         ) : (
           <form onSubmit={handleCreate} className={styles.createForm}>
             <p className={styles.sectionDesc}>
-              Crie seu perfil personalizado para salvar seu XP, ofensiva e posição no ranking:
+              Crie um perfil para salvar o seu XP, a sua ofensiva e a sua posição no ranking.
             </p>
 
-            {error && <div className={styles.errorBanner}>{error}</div>}
+            {error && <div className={styles.errorBanner} role="alert">{error}</div>}
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>Nome do Aluno:</label>
+              <label className={styles.label} htmlFor="new-student-name">Nome do aluno</label>
               <input
+                id="new-student-name"
                 type="text"
-                placeholder="Ex: João Paulo, Maria, Lucas..."
+                placeholder="Ex: Maria"
                 className={styles.textInput}
                 value={name}
                 onChange={(e) => {
@@ -147,26 +149,6 @@ export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Prop
               />
             </div>
 
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Escolha seu Avatar:</label>
-              <div className={styles.avatarGrid}>
-                {AVAILABLE_AVATARS.map((av) => (
-                  <button
-                    key={av.id}
-                    type="button"
-                    className={`${styles.avatarOption} ${
-                      selectedAvatar === av.id ? styles.selectedAvatar : ""
-                    }`}
-                    onClick={() => setSelectedAvatar(av.id)}
-                    title={av.name}
-                  >
-                    <span className={styles.avatarEmoji}>{av.id}</span>
-                    <span className={styles.avatarLabel}>{av.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
             <div className={styles.actionsRow}>
               <button
                 type="button"
@@ -176,7 +158,7 @@ export function LoginModal({ isOpen, currentUser, onClose, onUserChanged }: Prop
                 Voltar
               </button>
               <button type="submit" className={styles.submitBtn}>
-                Cadastrar e Entrar 🚀
+                Criar e entrar
               </button>
             </div>
           </form>

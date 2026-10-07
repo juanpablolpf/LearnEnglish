@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
+import { Lightbulb } from "lucide-react"
 import styles from "./styles.module.css"
-import tipIcon from "../../assets/tip.svg"
 import { DICAS_INICIAIS } from "../../utils/auth"
 
 type Props = {
@@ -27,11 +27,13 @@ export function Tip({ tip, themeName, exampleHint, dicasRestantes, onUsarDica }:
 
   return (
     <div className={styles.tip}>
-      <img src={tipIcon} alt="Ícone de dica" className={styles.icon} />
+      <span className={styles.icon} aria-hidden="true">
+        <Lightbulb size={18} strokeWidth={1.75} />
+      </span>
 
       <div className={styles.content}>
         <div className={styles.header}>
-          <h3>Significado em Português</h3>
+          <h3>Significado em português</h3>
           {themeName && <span className={styles.themeTag}>{themeName}</span>}
         </div>
         <p className={styles.tipText}>"{tip}"</p>
@@ -50,14 +52,14 @@ export function Tip({ tip, themeName, exampleHint, dicasRestantes, onUsarDica }:
             disabled={dicasRestantes <= 0}
             title={dicasRestantes <= 0 ? "Você usou todas as suas dicas" : "Ver uma frase em inglês com a palavra escondida"}
           >
-            <span className={styles.lampadas}>
+            <span className={styles.lampadas} aria-hidden="true">
               {Array.from({ length: DICAS_INICIAIS }).map((_, i) => (
-                <span
+                <Lightbulb
                   key={i}
-                  className={`${styles.lampada} ${i < dicasRestantes ? styles.lampadaAcesa : styles.lampadaApagada}`}
-                >
-                  💡
-                </span>
+                  size={14}
+                  strokeWidth={1.75}
+                  className={i < dicasRestantes ? styles.lampadaAcesa : styles.lampadaApagada}
+                />
               ))}
             </span>
             {dicasRestantes > 0 ? "Ver frase em inglês" : "Sem dicas restantes"}
